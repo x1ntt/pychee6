@@ -1,0 +1,292 @@
+{
+    "smart_albums": [
+        {
+            "id": "unsorted",
+            "title": "未分类",
+            "description": null,
+            "thumb": {
+                "id": "RfKdiW4N1XnpaV3qeqc2jVUH",
+                "type": "image/png",
+                "thumb": "http://127.0.0.1:8802/uploads/small/0b/64/645feb45399ead07d51e9b3b2fb6.png",
+                "thumb2x": "http://127.0.0.1:8802/uploads/small2x/0b/64/645feb45399ead07d51e9b3b2fb6.png",
+                "placeholder": "data:image/webp;base64,UklGRmAAAABXRUJQVlA4IFQAAADQAQCdASoQABAABABoJYwCdADPiXKWQAD+3Z1cQIuQJa5WE5yf9qvzjpGrNEAORBveX9jL2CHwZujgVxLBcBv8g3OtE/USVWE2fo7X5lYzmvuAAAA="
+            },
+            "is_nsfw": false,
+            "is_public": false,
+            "is_link_required": false,
+            "is_password_required": false,
+            "is_tag_album": false,
+            "has_subalbum": false,
+            "num_subalbums": 0,
+            "num_photos": 0,
+            "created_at": "",
+            "formatted_min_max": null,
+            "owner": null,
+            "rights": {
+                "can_edit": true,
+                "can_share": true,
+                "can_share_with_users": true,
+                "can_download": true,
+                "can_upload": true,
+                "can_move": false,
+                "can_delete": true,
+                "can_transfer": true,
+                "can_access_original": true
+            },
+            "timeline": null
+        },
+        {
+            "id": "starred",
+            "title": "星标",
+            "description": null,
+            "thumb": {
+                "id": "hW4KB4SeQ12YRSbcMrkg-v-1",
+                "type": "image/webp",
+                "thumb": "http://127.0.0.1:8802/uploads/small/d4/00/bbe511aabf90ed15b8213c681eb1.webp",
+                "thumb2x": "http://127.0.0.1:8802/uploads/small2x/d4/00/bbe511aabf90ed15b8213c681eb1.webp",
+                "placeholder": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAADQAQCdASoQABAABABoJZgAD4tHA8lhwAD+TReoOb48kKh398yHdOVbl+n+zVedrVh5+F+BQ+D2vL0WsarJRB0B/A9gCEFbv1vuzQ3HhgwiPEYBDK/AbT1iO89Mc7BCAecZJw/Brt1tsAAA"
+            },
+            "is_nsfw": false,
+            "is_public": false,
+            "is_link_required": false,
+            "is_password_required": false,
+            "is_tag_album": false,
+            "has_subalbum": false,
+            "num_subalbums": 0,
+            "num_photos": 0,
+            "created_at": "",
+            "formatted_min_max": null,
+            "owner": null,
+            "rights": {
+                "can_edit": true,
+                "can_share": true,
+                "can_share_with_users": true,
+                "can_download": true,
+                "can_upload": true,
+                "can_move": false,
+                "can_delete": true,
+                "can_transfer": true,
+                "can_access_original": true
+            },
+            "timeline": null
+        },
+        {
+            "id": "recent",
+            "title": "最新",
+            "description": null,
+            "thumb": {
+                "id": "tjpVXhm2QH-Lbh2p30hZUTIx",
+                "type": "image/gif",
+                "thumb": "http://127.0.0.1:8802/uploads/thumb/c8/52/2b84f4a4e2794bc6dd256af725c5.jpeg",
+                "thumb2x": null,
+                "placeholder": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADQAQCdASoQABAABABoJQBOgBePPGJ4AAD+3ukcFUrgAEdcysMDSjEuWC8gA6FwZobBqpi255y5o+TmvZ4+J4mVm2ft6fIwAAA="
+            },
+            "is_nsfw": false,
+            "is_public": false,
+            "is_link_required": false,
+            "is_password_required": false,
+            "is_tag_album": false,
+            "has_subalbum": false,
+            "num_subalbums": 0,
+            "num_photos": 0,
+            "created_at": "",
+            "formatted_min_max": null,
+            "owner": null,
+            "rights": {
+                "can_edit": true,
+                "can_share": true,
+                "can_share_with_users": true,
+                "can_download": true,
+                "can_upload": true,
+                "can_move": false,
+                "can_delete": true,
+                "can_transfer": true,
+                "can_access_original": true
+            },
+            "timeline": null
+        },
+        {
+            "id": "on_this_day",
+            "title": "历史上的今天",
+            "description": null,
+            "thumb": null,
+            "is_nsfw": false,
+            "is_public": false,
+            "is_link_required": false,
+            "is_password_required": false,
+            "is_tag_album": false,
+            "has_subalbum": false,
+            "num_subalbums": 0,
+            "num_photos": 0,
+            "created_at": "",
+            "formatted_min_max": null,
+            "owner": null,
+            "rights": {
+                "can_edit": true,
+                "can_share": true,
+                "can_share_with_users": true,
+                "can_download": true,
+                "can_upload": true,
+                "can_move": false,
+                "can_delete": true,
+                "can_transfer": true,
+                "can_access_original": true
+            },
+            "timeline": null
+        }
+    ],
+    "tag_albums": [
+
+    ],
+    "albums": [
+        {
+            "id": "GjsKAT8pQ-A8bmctTN9mNLjh",
+            "title": "新的测试相册",
+            "description": null,
+            "thumb": {
+                "id": "CYMV7XoMeSpAz9mWumCxRfav",
+                "type": "image/jpeg",
+                "thumb": "http://127.0.0.1:8802/uploads/small/97/40/2dbb4249c0b96390cbc4b9fef573.jpg",
+                "thumb2x": "http://127.0.0.1:8802/uploads/small2x/97/40/2dbb4249c0b96390cbc4b9fef573.jpg",
+                "placeholder": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAACwAQCdASoQABAABABoJZwAAjllOtH8AP7x+VklY1lx+5bT7AUW3u0F+ZVyNRIU4v9G7pnX4+3oWDdmqSMTatbJgnhajGeH506VVnbGRDUD38TOD0e8ybnn9UwAvMsSCmqLvQgA"
+            },
+            "is_nsfw": false,
+            "is_public": false,
+            "is_link_required": false,
+            "is_password_required": false,
+            "is_tag_album": false,
+            "has_subalbum": false,
+            "num_subalbums": 0,
+            "num_photos": 3,
+            "created_at": "Dec 2024",
+            "formatted_min_max": null,
+            "owner": "root",
+            "rights": {
+                "can_edit": true,
+                "can_share": true,
+                "can_share_with_users": true,
+                "can_download": true,
+                "can_upload": true,
+                "can_move": true,
+                "can_delete": true,
+                "can_transfer": true,
+                "can_access_original": true
+            },
+            "timeline": null
+        },
+        {
+            "id": "QVTko4XqcIK3VPzuCXAB_I3T",
+            "title": "test__album",
+            "description": null,
+            "thumb": {
+                "id": "-50KG0HKaHR85EsdBuJsBOmX",
+                "type": "image/webp",
+                "thumb": "http://127.0.0.1:8802/uploads/small/bd/e1/af9db81b7360b1ed37adcbd67dde.webp",
+                "thumb2x": "http://127.0.0.1:8802/uploads/small2x/bd/e1/af9db81b7360b1ed37adcbd67dde.webp",
+                "placeholder": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAADwAQCdASoQABAABABoJZwAAu179gmqA2gA/vYKHe0FbA4ItOr4Np1GYpd7SO4FoTfxic+nwq1AbL8CAAA="
+            },
+            "is_nsfw": false,
+            "is_public": false,
+            "is_link_required": false,
+            "is_password_required": false,
+            "is_tag_album": false,
+            "has_subalbum": true,
+            "num_subalbums": 1,
+            "num_photos": 2,
+            "created_at": "Dec 2024",
+            "formatted_min_max": null,
+            "owner": "root",
+            "rights": {
+                "can_edit": true,
+                "can_share": true,
+                "can_share_with_users": true,
+                "can_download": true,
+                "can_upload": true,
+                "can_move": true,
+                "can_delete": true,
+                "can_transfer": true,
+                "can_access_original": true
+            },
+            "timeline": null
+        },
+        {
+            "id": "-WnvWIQ_K9R2wqvnFBigvVJC",
+            "title": "testalbum",
+            "description": null,
+            "thumb": null,
+            "is_nsfw": false,
+            "is_public": false,
+            "is_link_required": false,
+            "is_password_required": false,
+            "is_tag_album": false,
+            "has_subalbum": false,
+            "num_subalbums": 0,
+            "num_photos": 0,
+            "created_at": "Dec 2024",
+            "formatted_min_max": null,
+            "owner": "root",
+            "rights": {
+                "can_edit": true,
+                "can_share": true,
+                "can_share_with_users": true,
+                "can_download": true,
+                "can_upload": true,
+                "can_move": true,
+                "can_delete": true,
+                "can_transfer": true,
+                "can_access_original": true
+            },
+            "timeline": null
+        },
+        {
+            "id": "zUTB2k8memPLyYdfpyK0BCof",
+            "title": "ho_hoho",
+            "description": null,
+            "thumb": null,
+            "is_nsfw": false,
+            "is_public": false,
+            "is_link_required": false,
+            "is_password_required": false,
+            "is_tag_album": false,
+            "has_subalbum": false,
+            "num_subalbums": 0,
+            "num_photos": 0,
+            "created_at": "Dec 2024",
+            "formatted_min_max": null,
+            "owner": "root",
+            "rights": {
+                "can_edit": true,
+                "can_share": true,
+                "can_share_with_users": true,
+                "can_download": true,
+                "can_upload": true,
+                "can_move": true,
+                "can_delete": true,
+                "can_transfer": true,
+                "can_access_original": true
+            },
+            "timeline": null
+        }
+    ],
+    "shared_albums": [
+
+    ],
+    "config": {
+        "is_map_accessible": false,
+        "is_mod_frame_enabled": true,
+        "is_photo_timeline_enabled": true,
+        "is_album_timeline_enabled": true,
+        "is_search_accessible": true,
+        "show_keybinding_help_button": true,
+        "album_thumb_css_aspect_ratio": "aspect-square",
+        "login_button_position": "left",
+        "back_button_enabled": false,
+        "back_button_text": "Return to Home",
+        "back_button_url": "/",
+        "timeline_album_granularity": "year"
+    },
+    "rights": {
+        "can_edit": true,
+        "can_upload": true
+    }
+}

@@ -1,0 +1,72 @@
+[
+    {
+        "id": "GjsKAT8pQ-A8bmctTN9mNLjh",
+        "title": "新的测试相册",
+        "parent_id": null,
+        "_lft": 1,
+        "_rgt": 2
+    },
+    {
+        "id": "-WnvWIQ_K9R2wqvnFBigvVJC",
+        "title": "testalbum",
+        "parent_id": null,
+        "_lft": 3,
+        "_rgt": 8
+    },
+    {
+        "id": "vCV7bvNSB9e3IfNerbIOjl-q",
+        "title": "二级相册",
+        "parent_id": "-WnvWIQ_K9R2wqvnFBigvVJC",
+        "_lft": 4,
+        "_rgt": 5
+    },
+    {
+        "id": "DHQcg9PiBESHFDRdiVz-T-G2",
+        "title": "二级相册",
+        "parent_id": "-WnvWIQ_K9R2wqvnFBigvVJC",
+        "_lft": 6,
+        "_rgt": 7
+    },
+    {
+        "id": "QVTko4XqcIK3VPzuCXAB_I3T",
+        "title": "test__album",
+        "parent_id": null,
+        "_lft": 9,
+        "_rgt": 14
+    },
+    {
+        "id": "YaVcvuY2VA3zJy7zCsBt1776",
+        "title": "二级相册",
+        "parent_id": "QVTko4XqcIK3VPzuCXAB_I3T",
+        "_lft": 10,
+        "_rgt": 11
+    },
+    {
+        "id": "JIhJ5oJrEipv9cQnQgo76U6G",
+        "title": "deepth2",
+        "parent_id": "QVTko4XqcIK3VPzuCXAB_I3T",
+        "_lft": 12,
+        "_rgt": 13
+    },
+    {
+        "id": "9LThaf-yBPlPjv8r7R8OGewK",
+        "title": "用于测试",
+        "parent_id": null,
+        "_lft": 15,
+        "_rgt": 20
+    },
+    {
+        "id": "W6dP2d53bdllR1LX1xLWCXW6",
+        "title": "img",
+        "parent_id": "9LThaf-yBPlPjv8r7R8OGewK",
+        "_lft": 16,
+        "_rgt": 19
+    },
+    {
+        "id": "b4noPnuHQSSCXZL_IMsLEGAJ",
+        "title": "deepth2",
+        "parent_id": "W6dP2d53bdllR1LX1xLWCXW6",
+        "_lft": 17,
+        "_rgt": 18
+    }
+]

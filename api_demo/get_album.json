@@ -1,0 +1,377 @@
+{
+    "config": {
+        "is_base_album": true,
+        "is_model_album": true,
+        "is_accessible": true,
+        "is_password_protected": false,
+        "is_map_accessible": false,
+        "is_mod_frame_enabled": true,
+        "is_search_accessible": true,
+        "is_nsfw_warning_visible": false,
+        "album_thumb_css_aspect_ratio": "aspect-square",
+        "photo_layout": "justified",
+        "is_album_timeline_enabled": true,
+        "is_photo_timeline_enabled": true
+    },
+    "resource": {
+        "id": "QVTko4XqcIK3VPzuCXAB_I3T",
+        "title": "test__album",
+        "owner_name": "root",
+        "description": null,
+        "copyright": null,
+        "track_url": null,
+        "license": "None",
+        "header_id": "",
+        "parent_id": null,
+        "has_albums": true,
+        "albums": [
+            {
+                "id": "YaVcvuY2VA3zJy7zCsBt1776",
+                "title": "二级相册",
+                "description": null,
+                "thumb": {
+                    "id": "tjpVXhm2QH-Lbh2p30hZUTIx",
+                    "type": "image/gif",
+                    "thumb": "http://127.0.0.1:8802/uploads/thumb/c8/52/2b84f4a4e2794bc6dd256af725c5.jpeg",
+                    "thumb2x": null,
+                    "placeholder": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADQAQCdASoQABAABABoJQBOgBePPGJ4AAD+3ukcFUrgAEdcysMDSjEuWC8gA6FwZobBqpi255y5o+TmvZ4+J4mVm2ft6fIwAAA="
+                },
+                "is_nsfw": false,
+                "is_public": false,
+                "is_link_required": false,
+                "is_password_required": false,
+                "is_tag_album": false,
+                "has_subalbum": false,
+                "num_subalbums": 0,
+                "num_photos": 1,
+                "created_at": "Jan 2025",
+                "formatted_min_max": null,
+                "owner": "root",
+                "rights": {
+                    "can_edit": true,
+                    "can_share": true,
+                    "can_share_with_users": true,
+                    "can_download": true,
+                    "can_upload": true,
+                    "can_move": true,
+                    "can_delete": true,
+                    "can_transfer": true,
+                    "can_access_original": true
+                },
+                "timeline": null
+            }
+        ],
+        "photos": [
+            {
+                "id": "-50KG0HKaHR85EsdBuJsBOmX",
+                "album_id": "QVTko4XqcIK3VPzuCXAB_I3T",
+                "altitude": null,
+                "aperture": null,
+                "checksum": "df51a3b6086651525a929cc5926ca8d75a202dab",
+                "created_at": "2024-12-20T08:12:04+00:00",
+                "description": "",
+                "focal": null,
+                "is_starred": false,
+                "iso": null,
+                "latitude": null,
+                "lens": null,
+                "license": "none",
+                "live_photo_checksum": null,
+                "live_photo_content_id": null,
+                "live_photo_url": null,
+                "location": null,
+                "longitude": null,
+                "make": null,
+                "model": null,
+                "original_checksum": "df51a3b6086651525a929cc5926ca8d75a202dab",
+                "shutter": null,
+                "size_variants": {
+                    "original": {
+                        "type": 0,
+                        "locale": "Original",
+                        "filesize": "352.75 KB",
+                        "height": 1539,
+                        "width": 2736,
+                        "url": "http://127.0.0.1:8802/uploads/original/bd/e1/af9db81b7360b1ed37adcbd67dde.webp"
+                    },
+                    "medium2x": null,
+                    "medium": {
+                        "type": 2,
+                        "locale": "中等尺寸",
+                        "filesize": "107.11 KB",
+                        "height": 1080,
+                        "width": 1920,
+                        "url": "http://127.0.0.1:8802/uploads/medium/bd/e1/af9db81b7360b1ed37adcbd67dde.webp"
+                    },
+                    "small2x": {
+                        "type": 3,
+                        "locale": "缩略图 HiDPI",
+                        "filesize": "63.72 KB",
+                        "height": 720,
+                        "width": 1280,
+                        "url": "http://127.0.0.1:8802/uploads/small2x/bd/e1/af9db81b7360b1ed37adcbd67dde.webp"
+                    },
+                    "small": {
+                        "type": 4,
+                        "locale": "缩略图",
+                        "filesize": "26.95 KB",
+                        "height": 360,
+                        "width": 640,
+                        "url": "http://127.0.0.1:8802/uploads/small/bd/e1/af9db81b7360b1ed37adcbd67dde.webp"
+                    },
+                    "thumb2x": {
+                        "type": 5,
+                        "locale": "方形缩略图 HiDPI",
+                        "filesize": "36.40 KB",
+                        "height": 400,
+                        "width": 400,
+                        "url": "http://127.0.0.1:8802/uploads/thumb2x/bd/e1/af9db81b7360b1ed37adcbd67dde.jpeg"
+                    },
+                    "thumb": {
+                        "type": 6,
+                        "locale": "方形缩略图",
+                        "filesize": "12.47 KB",
+                        "height": 200,
+                        "width": 200,
+                        "url": "http://127.0.0.1:8802/uploads/thumb/bd/e1/af9db81b7360b1ed37adcbd67dde.jpeg"
+                    },
+                    "placeholder": {
+                        "type": 7,
+                        "locale": "Low Quality Image Placeholder",
+                        "filesize": "108.00 B",
+                        "height": 16,
+                        "width": 16,
+                        "url": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAADwAQCdASoQABAABABoJZwAAu179gmqA2gA/vYKHe0FbA4ItOr4Np1GYpd7SO4FoTfxic+nwq1AbL8CAAA="
+                    }
+                },
+                "tags": [
+
+                ],
+                "taken_at": null,
+                "taken_at_orig_tz": null,
+                "title": "157_modify.webp",
+                "type": "image/webp",
+                "updated_at": "2024-12-31T04:07:31+00:00",
+                "rights": {
+                    "can_edit": true,
+                    "can_download": true,
+                    "can_access_full_photo": true
+                },
+                "next_photo_id": "Tcp6XFPucVLWftDYc-q9nmIU",
+                "previous_photo_id": "Tcp6XFPucVLWftDYc-q9nmIU",
+                "preformatted": {
+                    "created_at": "Dec 20, 2024, 8:12:04 AM UTC",
+                    "taken_at": null,
+                    "date_overlay": "Dec 20, 2024, 8:12:04 AM UTC",
+                    "shutter": "",
+                    "aperture": "",
+                    "iso": "感光度 ",
+                    "lens": "",
+                    "duration": "0s",
+                    "fps": " fps",
+                    "filesize": "352.75 KB",
+                    "resolution": "2736 x 1539",
+                    "latitude": null,
+                    "longitude": null,
+                    "altitude": null,
+                    "license": "",
+                    "description": ""
+                },
+                "precomputed": {
+                    "is_video": false,
+                    "is_raw": false,
+                    "is_livephoto": false,
+                    "is_camera_date": false,
+                    "has_exif": false,
+                    "has_location": false
+                },
+                "timeline": {
+                    "timeDate": "2024-12-20",
+                    "format": "20 Dec 2024"
+                }
+            },
+            {
+                "id": "Tcp6XFPucVLWftDYc-q9nmIU",
+                "album_id": "QVTko4XqcIK3VPzuCXAB_I3T",
+                "altitude": null,
+                "aperture": null,
+                "checksum": "df51a3b6086651525a929cc5926ca8d75a202dab",
+                "created_at": "2024-12-20T09:00:53+00:00",
+                "description": "",
+                "focal": null,
+                "is_starred": false,
+                "iso": null,
+                "latitude": null,
+                "lens": null,
+                "license": "none",
+                "live_photo_checksum": null,
+                "live_photo_content_id": null,
+                "live_photo_url": null,
+                "location": null,
+                "longitude": null,
+                "make": null,
+                "model": null,
+                "original_checksum": "df51a3b6086651525a929cc5926ca8d75a202dab",
+                "shutter": null,
+                "size_variants": {
+                    "original": {
+                        "type": 0,
+                        "locale": "Original",
+                        "filesize": "352.75 KB",
+                        "height": 1539,
+                        "width": 2736,
+                        "url": "http://127.0.0.1:8802/uploads/original/bd/e1/af9db81b7360b1ed37adcbd67dde.webp"
+                    },
+                    "medium2x": null,
+                    "medium": {
+                        "type": 2,
+                        "locale": "中等尺寸",
+                        "filesize": "107.11 KB",
+                        "height": 1080,
+                        "width": 1920,
+                        "url": "http://127.0.0.1:8802/uploads/medium/bd/e1/af9db81b7360b1ed37adcbd67dde.webp"
+                    },
+                    "small2x": {
+                        "type": 3,
+                        "locale": "缩略图 HiDPI",
+                        "filesize": "63.72 KB",
+                        "height": 720,
+                        "width": 1280,
+                        "url": "http://127.0.0.1:8802/uploads/small2x/bd/e1/af9db81b7360b1ed37adcbd67dde.webp"
+                    },
+                    "small": {
+                        "type": 4,
+                        "locale": "缩略图",
+                        "filesize": "26.95 KB",
+                        "height": 360,
+                        "width": 640,
+                        "url": "http://127.0.0.1:8802/uploads/small/bd/e1/af9db81b7360b1ed37adcbd67dde.webp"
+                    },
+                    "thumb2x": {
+                        "type": 5,
+                        "locale": "方形缩略图 HiDPI",
+                        "filesize": "36.40 KB",
+                        "height": 400,
+                        "width": 400,
+                        "url": "http://127.0.0.1:8802/uploads/thumb2x/bd/e1/af9db81b7360b1ed37adcbd67dde.jpeg"
+                    },
+                    "thumb": {
+                        "type": 6,
+                        "locale": "方形缩略图",
+                        "filesize": "12.47 KB",
+                        "height": 200,
+                        "width": 200,
+                        "url": "http://127.0.0.1:8802/uploads/thumb/bd/e1/af9db81b7360b1ed37adcbd67dde.jpeg"
+                    },
+                    "placeholder": {
+                        "type": 7,
+                        "locale": "Low Quality Image Placeholder",
+                        "filesize": "108.00 B",
+                        "height": 16,
+                        "width": 16,
+                        "url": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAADwAQCdASoQABAABABoJZwAAu179gmqA2gA/vYKHe0FbA4ItOr4Np1GYpd7SO4FoTfxic+nwq1AbL8CAAA="
+                    }
+                },
+                "tags": [
+
+                ],
+                "taken_at": null,
+                "taken_at_orig_tz": null,
+                "title": "157_modify.webp",
+                "type": "image/webp",
+                "updated_at": "2024-12-31T04:07:31+00:00",
+                "rights": {
+                    "can_edit": true,
+                    "can_download": true,
+                    "can_access_full_photo": true
+                },
+                "next_photo_id": "-50KG0HKaHR85EsdBuJsBOmX",
+                "previous_photo_id": "-50KG0HKaHR85EsdBuJsBOmX",
+                "preformatted": {
+                    "created_at": "Dec 20, 2024, 9:00:53 AM UTC",
+                    "taken_at": null,
+                    "date_overlay": "Dec 20, 2024, 9:00:53 AM UTC",
+                    "shutter": "",
+                    "aperture": "",
+                    "iso": "感光度 ",
+                    "lens": "",
+                    "duration": "0s",
+                    "fps": " fps",
+                    "filesize": "352.75 KB",
+                    "resolution": "2736 x 1539",
+                    "latitude": null,
+                    "longitude": null,
+                    "altitude": null,
+                    "license": "",
+                    "description": ""
+                },
+                "precomputed": {
+                    "is_video": false,
+                    "is_raw": false,
+                    "is_livephoto": false,
+                    "is_camera_date": false,
+                    "has_exif": false,
+                    "has_location": false
+                },
+                "timeline": {
+                    "timeDate": "2024-12-20",
+                    "format": "20 Dec 2024"
+                }
+            }
+        ],
+        "cover_id": null,
+        "thumb": {
+            "id": "-50KG0HKaHR85EsdBuJsBOmX",
+            "type": "image/webp",
+            "thumb": "http://127.0.0.1:8802/uploads/small/bd/e1/af9db81b7360b1ed37adcbd67dde.webp",
+            "thumb2x": "http://127.0.0.1:8802/uploads/small2x/bd/e1/af9db81b7360b1ed37adcbd67dde.webp",
+            "placeholder": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAADwAQCdASoQABAABABoJZwAAu179gmqA2gA/vYKHe0FbA4ItOr4Np1GYpd7SO4FoTfxic+nwq1AbL8CAAA="
+        },
+        "policy": {
+            "is_public": false,
+            "is_link_required": false,
+            "is_nsfw": false,
+            "grants_full_photo_access": false,
+            "grants_download": false,
+            "is_password_required": false
+        },
+        "rights": {
+            "can_edit": true,
+            "can_share": true,
+            "can_share_with_users": true,
+            "can_download": true,
+            "can_upload": true,
+            "can_move": true,
+            "can_delete": true,
+            "can_transfer": true,
+            "can_access_original": true
+        },
+        "preFormattedData": {
+            "url": "http://127.0.0.1:8802/uploads/medium/bd/e1/af9db81b7360b1ed37adcbd67dde.webp",
+            "title": "test__album",
+            "min_max_text": null,
+            "license": "",
+            "num_children": 1,
+            "num_photos": 2,
+            "created_at": "Dec 19, 2024, 9:43:04 AM UTC",
+            "description": "",
+            "copyright": null
+        },
+        "editable": {
+            "id": "QVTko4XqcIK3VPzuCXAB_I3T",
+            "title": "test__album",
+            "description": null,
+            "copyright": null,
+            "license": "none",
+            "photo_sorting": null,
+            "album_sorting": null,
+            "aspect_ratio": "1/1",
+            "photo_layout": null,
+            "header_id": null,
+            "cover_id": null,
+            "album_timeline": null,
+            "photo_timeline": null,
+            "is_model_album": true
+        }
+    }
+}
