@@ -277,7 +277,7 @@ class LycheeClient():
 if __name__ == "__main__":
     client = LycheeClient("http://127.0.0.1:8802/")
 
-    # 两种登录方式
+    # 两种登录方式 选择其中之一
     client.login_by_passwd("root","123456")
     # client.login_by_token("5ic4uQzkOpuAlJApJfIfbA==")
 

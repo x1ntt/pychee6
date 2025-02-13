@@ -1,9 +1,10 @@
-from lychee_client import LycheeClient
+from pychee6 import LycheeClient
 from termcolor import colored
 from pathlib import Path
 import argparse
 import os
 
+# 这个类用来封装一些常用操作
 class lychee_cli:
     def __init__(self, host:str):
         self.client = LycheeClient(host)
@@ -118,7 +119,9 @@ class lychee_cli:
             self.client.download_album(album_id, save_path)
     
     def create_album(self, album_name:str, album_id:str):
-        if album_id[0] == "/":
+        if album_id in ["/", ""]:
+            return self.client.create_album(album_name, "/")
+        elif album_id[0] == "/":
             res = self.client.album_path2id(album_id)
             if len(res) != 1: 
                 print (f"路径({album_id})对应多个相册或者没有对应相册: {str(res)}")
@@ -140,7 +143,7 @@ class lychee_cli:
                 print (f"找不到 {album_id} 对应的相册")
 
 def main():
-    parser = argparse.ArgumentParser(description="这是LycheeClient的cli版本，你可以把这个当作库的使用示例")
+    parser = argparse.ArgumentParser(description="这是LycheeClient的cli版本，你可以把这个当作库的使用示例。\n大多数情况下，你可以使用album_id或者相册路径为参数。\n\talbum_id是一个24位长度的字符串形如：b4noPnuHQSSCXZL_IMsLEGAJ。\n\t相册路径是以/开头的字符串形如：/deepth_1/deepth_2。其中单独的/表示根目录或者说未分类", formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("-t", "--token", help="登录所需要的api token，与用户名二选一 可以通过 LYCHEE_TOKEN 环境变量提供")
     parser.add_argument("-u", "--user", help="用户名 可以通过环境变量 LYCHEE_USERNAME 提供")
     parser.add_argument("-p", "--passwd", help="密码 可以通过环境变量 LYCHEE_PASSWORD 提供")
@@ -148,33 +151,33 @@ def main():
 
     subargs = parser.add_subparsers(dest='command')
 
-    upload_album_arg = subargs.add_parser("upload_album", aliases=["u_a"], description="自动创建相册，album_id为'/'则上传到根相册")
+    upload_album_arg = subargs.add_parser("upload_album", aliases=["u_a"], help="自动创建相册，album_id为'/'则上传到根相册")
     upload_album_arg.add_argument("album_id", help="相册id，可以为'/'开头的相册路径")
     upload_album_arg.add_argument("path", help="需要上传的目录")
 
-    upload_photo_arg = subargs.add_parser("upload_photo", aliases=["u_p"], description="上传图片到相册，album_id为'/'则上传到未分类")
+    upload_photo_arg = subargs.add_parser("upload_photo", aliases=["u_p"], help="上传图片到相册，album_id为'/'则上传到未分类")
     upload_photo_arg.add_argument("album_id", help="相册id，可以为'/'开头的相册路径")
     upload_photo_arg.add_argument("path", help="需要上传的图片")
 
-    download_album_arg = subargs.add_parser("download_album", aliases=["d_a"], description="下载相册，album_id为'/'则下载所有")
+    download_album_arg = subargs.add_parser("download_album", aliases=["d_a"], help="下载相册，album_id为'/'则下载所有")
     download_album_arg.add_argument("album_id", help="相册id，可以为'/'开头的相册路径")
     download_album_arg.add_argument("path", help="下载的目标目录")
 
-    create_album_arg = subargs.add_parser("create_album", aliases=["c_a"], description="创建相册，album_id为'/'则在根相册创建")
+    create_album_arg = subargs.add_parser("create_album", aliases=["c_a"], help="创建相册，album_id为'/'则在根相册创建")
     create_album_arg.add_argument("album_id", help="父相册id，可以为'/'开头的相册路径")
     create_album_arg.add_argument("album_name", help="新相册的名字")
 
-    list_arg = subargs.add_parser("list", aliases=["ls"], prog="list <dist> <album_id/album_path>", description="列出相册和图片")
+    list_arg = subargs.add_parser("list", aliases=["ls"], prog="list <dist> <album_id/album_path>", help="列出相册和图片")
     list_arg.add_argument("target", nargs="?", default="/", help="可以是相册id或者'/'开头的相册路径，如果以'-'开头，则需要在前面补充--，形如list -- -iw78289")
 
-    list_arg = subargs.add_parser("list_album", aliases=["la"], prog="list_album <dist> <album_id/album_path>", description="仅显示相册")
+    list_arg = subargs.add_parser("list_album", aliases=["la"], prog="list_album <dist> <album_id/album_path>", help="仅显示相册")
     list_arg.add_argument("target", nargs="?", default="/", help="可以是相册id或者'/'开头的相册路径，如果以'-'开头，则需要在前面补充--list_album -- -iw78289")
 
-    conv_arg = subargs.add_parser("conv", aliases=["c_v"], description="album_id和album_path互相转换")
+    conv_arg = subargs.add_parser("conv", aliases=["c_v"], help="album_id和album_path互相转换")
     conv_arg.add_argument("album_id", help="album_id 和 album_path 相互转换，相册路径需以'/'开头")
 
     args = parser.parse_args()
-    print (args)
+    # print (args)
 
     if args.command in ["help", "h"]:
         parser.print_help()
@@ -227,5 +230,6 @@ def main():
     else:
         parser.print_help()
 
+# 这个文件用来测试代码
 if __name__ == '__main__':
     main()
