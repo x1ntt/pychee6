@@ -92,7 +92,7 @@ class LycheeClient():
 
     # 创建一个相册，返回相册id
     def create_album(self, album_name, parent_id="/"):
-        print (f"创建相册: {album_name}, {parent_id}")
+        # print (f"创建相册: {album_name}, {parent_id}")
         if parent_id =="/":
             parent_id = None
         return self._sess.post("Album", json={
@@ -117,7 +117,7 @@ class LycheeClient():
 
     # 上传照片，可以指定相册id（这个接口似乎不能跳过已经上传的文件）
     def upload_photo(self, upload_filename, album_id="/"):
-        print (f"上传照片: {upload_filename},{album_id}")
+        # print (f"上传照片: {upload_filename},{album_id}")
         if album_id == "/":
             album_id = None
         try:
@@ -136,10 +136,11 @@ class LycheeClient():
                                 'chunk_number': (None, '1'),
                                 'total_chunks': (None, '1'),
                             })
-                print (f"上传完毕: {upload_filename} r.json() {r.json()}")
+                # print (f"上传完毕: {upload_filename} r.json() {r.json()}")
                 return r.json()
         except Exception as e:
-            print (f"上传失败: {str(e)}")
+            return {}
+            # print (f"上传失败: {str(e)}")
     
     def move_album(self, target_album, album_ids=[]):
         r = self._sess.post("Album::move",
@@ -163,13 +164,13 @@ class LycheeClient():
                     count += len(item)
                     f.write(item)
         except Exception as e:
-            print(f"Error downloading {url}: {e}")
+            raise f"Error downloading {url}: {e}"
 
     def download_album(self, album_id:str, save_path="./"):
         """
             递归下载某个相册 将会添加任务到downloader
         """
-        print (f"{album_id}:{save_path}")
+        # print (f"{album_id}:{save_path}")
         os.makedirs(save_path, exist_ok=True)
         # 获取路径下所有的相册 将图片加入下载器 相册继续遍历
         album_info = self.get_album(album_id)
@@ -214,7 +215,7 @@ class LycheeClient():
         title_id_map = {}
         for album in res["resource"]["albums"]:
             if album["title"] in title_id_map.keys():
-                print(f"Waring {cur_title}中有多个名为{album["title"]}的相册 图片将会上传到第一个同名相册")
+                # print(f"Waring {cur_title}中有多个名为{album["title"]}的相册 图片将会上传到第一个同名相册")
                 continue
             title_id_map[album["title"]] = album["id"]
         
