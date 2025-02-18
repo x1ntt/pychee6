@@ -1,15 +1,33 @@
 ![157_modify](README.assets/157_modify.webp)
 
-这是个对lychee6的v2 api进行包装的库，并提供了一个简单命令行客户端，如果你要二次开发，可以参考`lychee-cli.py`
+这是个对`lychee6`的`v2 api`进行包装的库，并提供一些实用功能。提供了一个简单命令行客户端，如果要二次开发，可以参考`lychee-cli.py`
 
-需要注意，目前仅支持lychee6以上的版本
+需要注意，目前仅支持`lychee6`以上的版本
 
 如果有什么问题，请提issues
+
+# 安装
+
+## 通过pip3
+
+```shell
+pip3 install git+https://github.com/x1ntt/pychee6
+```
+
+## 手动
+
+```shell
+git clone https://github.com/x1ntt/pychee6.git
+cd pychee6
+pip3 install .
+```
+
+安装完毕后可以使用：`python3 -m pychee6.lychee-cli` 来使用cli
 
 # 一些使用例子
 
 ```shell
-python3 lychee-cli.py -h
+python3 -m pychee6.lychee-cli -h
 usage: lychee-cli.py [-h] [-t TOKEN] [-u USER] [-p PASSWD] [-H HOST]
                      {upload_album,u_a,upload_photo,u_p,download_album,d_a,create_album,c_a,list,ls,list_album,la,conv,c_v} ...
 
@@ -45,69 +63,69 @@ options:
 # 通过 user 和 passwd 登录
 lychee-cli.py --user admin --passwd admin --host http://127.0.0.1:3000/ ls
 # 或短参数
-python3 lychee-cli.py -u root -p 123456 -H http://127.0.0.1:8802/ ls
+python3 -m pychee6.lychee-cli -u root -p 123456 -H http://127.0.0.1:8802/ ls
 
 # 通过 token 登录
 lychee-cli.py --token xxxxxxxxxxxxx -H http://127.0.0.1:8802/
 ```
 或者通过环境变量登录，user对应LYCHEE_USERNAME变量，passwd对应LYCHEE_PASSWORD变量，host对应LYCHEE_HOST变量,token对应LYCHEE_TOKEN变量
 
-参数优先级更高，考虑到密码安全，建议使用token的方式登录，为了方便，建议设定环境变量LYCHEE_HOST和LYCHEE_TOKEN。以下例子均以环境变量为例，所以隐去登录相关参数
+参数优先级更高，考虑到密码安全，建议使用token的方式登录，为了方便，建议设定环境变量`LYCHEE_HOST`和`LYCHEE_TOKEN`。以下例子均以环境变量为例，所以隐去登录相关参数
 
 ## 相关操作
 
 + 查看相册和照片列表
 ```shell
-python3 lychee-cli.py ls
+python3 -m pychee6.lychee-cli ls
 ```
 
 + 仅查看相册
 ```shell
-python3 lychee-cli.py la
+python3 -m pychee6.lychee-cli la
 ```
 
 + 创建相册
 ```shell
-python3 lychee-cli.py c_a / new_album
-python3 lychee-cli.py c_a /new_album deepth_1
-python3 lychee-cli.py c_a p92kvXqyZUC6M-8CcPAwnCpd deepth_2
+python3 -m pychee6.lychee-cli c_a / new_album
+python3 -m pychee6.lychee-cli c_a /new_album deepth_1
+python3 -m pychee6.lychee-cli c_a p92kvXqyZUC6M-8CcPAwnCpd deepth_2
 
 结果如下：
-$ python3 lychee-cli.py c_a / new_album
+$ python3 -m pychee6.lychee-cli c_a / new_album
 创建相册: new_album, /
 新相册id: WdgpHuHV0MRQjtUBBMgh8DbS
-$ python3 lychee-cli.py c_a /new_album deepth_1
+$ python3 -m pychee6.lychee-cli c_a /new_album deepth_1
 路径(/new_album)自动转换为id WdgpHuHV0MRQjtUBBMgh8DbS
 创建相册: deepth_1, WdgpHuHV0MRQjtUBBMgh8DbS
 新相册id: p92kvXqyZUC6M-8CcPAwnCpd
-$ python3 lychee-cli.py c_a p92kvXqyZUC6M-8CcPAwnCpd deepth_2
+$ python3 -m pychee6.lychee-cli c_a p92kvXqyZUC6M-8CcPAwnCpd deepth_2
 创建相册: deepth_2, p92kvXqyZUC6M-8CcPAwnCpd
 新相册id: IrpwfQHM62h8_d-VDBu6YBps
 ```
 
 + 下载相册
 ```shell
-python3 lychee-cli.py d_a / ./tmp/
+python3 -m pychee6.lychee-cli d_a / ./tmp/
 # 或指定id
-python3 lychee-cli.py d_a p92kvXqyZUC6M-8CcPAwnCpd ./tmp/
+python3 -m pychee6.lychee-cli d_a p92kvXqyZUC6M-8CcPAwnCpd ./tmp/
 ```
 
 + 上传相册
 ```shell
-python3 lychee-cli.py u_a /new_album ./tmp/test__album/
+python3 -m pychee6.lychee-cli u_a /new_album ./tmp/test__album/
 # 或指定id
-python3 lychee-cli.py u_a p92kvXqyZUC6M-8CcPAwnCpd ./tmp/test__album/
+python3 -m pychee6.lychee-cli u_a p92kvXqyZUC6M-8CcPAwnCpd ./tmp/test__album/
 ```
 
 + 上传图片
 ```shell
-python3 lychee-cli.py u_p /new_album ./tmp/test__album/157_modify.webp
+python3 -m pychee6.lychee-cli u_p /new_album ./tmp/test__album/157_modify.webp
 ```
 
 + 相册id和相册路径互相转换
 ```shell
-python3 lychee-cli.py c_v /new_album 
-python3 lychee-cli.py c_v p92kvXqyZUC6M-8CcPAwnCpd
+python3 -m pychee6.lychee-cli c_v /new_album 
+python3 -m pychee6.lychee-cli c_v p92kvXqyZUC6M-8CcPAwnCpd
 ```
 
 
@@ -115,8 +133,7 @@ python3 lychee-cli.py c_v p92kvXqyZUC6M-8CcPAwnCpd
 
 + 上传大文件可能需要很多内存，因为还没有实现分块上传
 
-# 将来可能会实现：
+# TODO：
 
-+ 命令行tui界面交互
-+ 相册挂载到文件系统或者目录
-+ 元数据下载和上传，以实现相册备份和还原
++ 移动指令
++ 
