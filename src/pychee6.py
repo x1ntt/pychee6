@@ -1,19 +1,12 @@
 from requests import Session
 from urllib.parse import unquote
 from concurrent.futures import ThreadPoolExecutor, wait
-from pathlib import Path
 import requests
 import base64
 import os
-import json
 import time
-import logging
 import shutil
 import sys
-
-logging.basicConfig(level=logging.INFO, format = '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-loger = logging.getLogger("lycheeclient")
-# loger.setLevel(logging.DEBUG)
 
 class LycheeSession(Session):
     def __init__(self, base_url):
@@ -26,7 +19,6 @@ class LycheeSession(Session):
 
         super().request('GET', self._base_url)
         self._set_csrf_header()
-
     
     def _set_csrf_header(self):
         csrf_token = self.cookies.get("XSRF-TOKEN")
@@ -38,7 +30,6 @@ class LycheeSession(Session):
     
     def request(self, method, url, *args, **kwargs):
         url = self._base_url + self._api_version + url
-        loger.debug(f"{method}: {url}")
         self._set_csrf_header()
 
         if "headers" in kwargs:
@@ -57,105 +48,158 @@ class LycheeSession(Session):
         return response
 
 class LycheeClient():
+    """ 约定
+
+    + `album_id`: 相册id必须是24字节长度的字符串
+    + `album_path`: 相册路径 必须是`/`开头 如果仅有`/`则表示根相册
+    """
     def __init__(self, base_url:str, max_workers:int=5):
+        """ 
+            :param base_url: lychee的api地址 如 `http://127.0.0.1:5000/`
+            :param max_workers: 下载最大线程数
+        """
         self._sess = LycheeSession(base_url)
 
         self._tasks_pool = ThreadPoolExecutor(max_workers=max_workers)
         self._futures = []
         self._file_name_list = []
+    
+    def wait_tasks(self):
+        wait(self._futures)
+        self._futures = []
 
-    def login_by_passwd(self, username, password):
+    def login_by_passwd(self, username:str, password:str):
+        """ 通过账号密码登录
+        :param username: 用户名
+        :param password: 密码
+
+        :return: 返回一个`tuple`, (res:bool, reason:dict)
+        """
         r = self._sess.post("Auth::login", json={
             "username": username, 
             "password": password
         })
         if r.status_code == 204:
-            return True, ""
-        return False, r.text
+            return True, r.json()
+        return False, r.json()
     
-    def login_by_token(self, token):
+    def login_by_token(self, token:str):
+        """ 你可以在`lychee`的设置界面获得 这个接口始终返回`True`
+        :param token: token
+        """
         self._sess._header["Authorization"] = token
         return True
     
-    # 获取相册属性和内容（包含详细的相册信息和图片信息），必须指定album_id
-    # ./api_demo/get_album.json
-    def get_album(self, album_id:str):
+    def get_album(self, album:str):
+        """ 获取相册属性和内容（包含详细的相册信息和图片信息）
+            :param album: album_id/album_path
+            :return: 返回一个`dict`, 结构形如 `./api_demo/get_album.json`
+        """
+        album_id = self.album_path2id_assert(album)
         json_info = {
             "album_id": album_id
         }
         return self._sess.get("Album", json=json_info).json()
     
-    # 获取根目录下的所有相册，与上一个接口返回的数据结构不同
-    # ./api_demo/get_albums.json
     def get_albums(self):
+        """ 获取根目录下的所有相册以及智能相册以及未分类图片
+            :return: 返回一个`dict`, 结构形如 `./api_demo/get_albums.json`
+        """
         return self._sess.get("Albums").json()
 
-    # 创建一个相册，返回相册id
-    def create_album(self, album_name, parent_id="/"):
-        # print (f"创建相册: {album_name}, {parent_id}")
-        if parent_id =="/":
-            parent_id = None
+    def create_album(self, album_name:str, parent_album="/"):
+        """ 创建一个相册并返回相册id
+            :param album_name: 相册名字
+            :param parent_album: 父相册 默认为根相册
+            :return: 返回一个`str`, album_id
+        """
+        album_id = self.album_path2id_assert(parent_album)
         return self._sess.post("Album", json={
-            "parent_id": parent_id,
+            "parent_id": album_id,
             "title": album_name
         }).text
 
-    # 删除一些相册
-    def delete_albums(self, album_ids:list):
-        # 成功与否都会返回204状态码，所以需要自行考虑成功或失败的问题
+    def delete_albums(self, albums:list):
+        """ 删除一些相册 
+            :param albums: `album` 列表
+            :return: 返回一个`int`, 作为状态码
+        """
+        id_list = []
+        for album in albums:
+            id_list.append(self.album_path2id_assert(album))
+
         return self._sess.delete("Album", json={
-            "album_ids": album_ids
+            "album_ids": id_list
         }).status_code
 
-    # 搜索关键字，可以指定相册(似乎这个接口有问题)
-    def search(self, terms, album_id=""):
+    def search(self, terms:str, album=""):
+        """ 搜索关键字，可以指定相册(似乎这个接口有问题)
+            :param terms: 搜索关键字
+            :param album_id: album_id 默认为根相册
+            :return: 返回一个`dict`
+        """
+        album_id = self.album_path2id_assert(album)
         terms = base64.b64encode(terms.encode(encoding="utf-8"))
         return self._sess.get("Search", json={
             "terms": terms.decode(),
             "album_id": album_id
         }).json()
 
-    # 上传照片，可以指定相册id（这个接口似乎不能跳过已经上传的文件）
-    def upload_photo(self, upload_filename, album_id="/"):
-        # print (f"上传照片: {upload_filename},{album_id}")
-        if album_id == "/":
-            album_id = None
-        try:
-            with open(upload_filename, "rb") as f:
-                r = self._sess.post("Photo", 
-                            delete_headers=[
-                                "Content-Type"  # requests won't add a boundary if this header is set when you pass files
-                            ],
-                            files={
-                                'album_id': (None, album_id),
-                                'file_last_modified_time': (None, '123456'),
-                                'file': f,
-                                'file_name': (None, os.path.basename(upload_filename)),
-                                'uuid_name': (None, ''),
-                                'extension': (None, ''),
-                                'chunk_number': (None, '1'),
-                                'total_chunks': (None, '1'),
-                            })
-                # print (f"上传完毕: {upload_filename} r.json() {r.json()}")
-                return r.json()
-        except Exception as e:
-            return {}
-            # print (f"上传失败: {str(e)}")
+    def upload_photo(self, album, upload_filename):
+        """ 上传照片到指定相册id(这个接口似乎不能跳过已经上传的文件)
+            :param upload_filename: 上传文件名
+            :param album_id: album_id 默认为根相册
+            :return: 返回一个`dict`
+        """
+        album_id = self.album_path2id_assert(album)
+
+        with open(upload_filename, "rb") as f:
+            r = self._sess.post("Photo", 
+                        delete_headers=[
+                            "Content-Type"  # requests won't add a boundary if this header is set when you pass files
+                        ],
+                        files={
+                            'album_id': (None, album_id),
+                            # 'file_last_modified_time': (None, '123456'),
+                            'file': f,
+                            'file_name': (None, os.path.basename(upload_filename)),
+                            'uuid_name': (None, ''),
+                            'extension': (None, ''),
+                            'chunk_number': (None, '1'),
+                            'total_chunks': (None, '1'),
+                        })
+            return r.json()
     
-    def move_album(self, target_album, album_ids=[]):
+    def move_album(self, target_album:str, albums=[]):
+        """ 移动相册
+            :param target_album: 目标相册
+            :param albums: 需要移动的相册id列表
+            :return: 返回一个`str`
+        """
+        target_album_id = self.album_path2id_assert(target_album)
+        album_ids = []
+        for album in albums:
+            album_ids.append(self.album_path2id_assert(album))
         r = self._sess.post("Album::move",
                         json={
-                            "album_id": target_album,
+                            "album_id": target_album_id,
                             "album_ids": album_ids
                         })
         return r.text
     
     def get_full_tree(self):
+        """ 获取完整的相册树形结构
+            :return: 返回一个`dict`, 形如 `./api_demo/get_full_tree.json`
+        """
         r = self._sess.get("Maintenance::fullTree")
         return r.json()
 
-    # 实用接口
-    def download_photo(self, url, file_name, dist_path):
+    def download_photo(self, url:str, file_name:str, dist_path:str):
+        """ 下载一张图片到指定路径
+            :param url: 图片url
+            :param file_name: 图片文件名
+            :param dist_path: 保存路径
+        """
         try:
             r = requests.get(url, stream=True)
             count = 0
@@ -166,11 +210,13 @@ class LycheeClient():
         except Exception as e:
             raise f"Error downloading {url}: {e}"
 
-    def download_album(self, album_id:str, save_path="./"):
-        """
-            递归下载某个相册 将会添加任务到downloader
+    def download_album(self, album:str, save_path="./"):
+        """ 递归下载某个相册 将会添加任务到downloader
+            :param album: album
+            :param save_path: 保存路径
         """
         # print (f"{album_id}:{save_path}")
+        album_id = self.album_path2id_assert(album)
         os.makedirs(save_path, exist_ok=True)
         # 获取路径下所有的相册 将图片加入下载器 相册继续遍历
         album_info = self.get_album(album_id)
@@ -192,7 +238,7 @@ class LycheeClient():
             # file_size = photo["size_variants"]["original"]["filesize"]
 
             """
-                针对lychee允许同名的问题 通过追加id的方式解决 在download_photo中解决会有线程不安全的问题
+                针对lychee允许同名的问题 通过追加id的方式解决 如果在download_photo中解决会有线程不安全的问题
                 157_modify.webp -> 157_modify.[vrnzJDV5TXFCxlJ4UABQzu6G].webp
             """
             full_name = os.path.join(save_path, file_name)
@@ -204,11 +250,13 @@ class LycheeClient():
                 self._file_name_list.append(full_name)
             self._futures.append(self._tasks_pool.submit(self.download_photo, photo_url, file_name, save_path))
 
-    def upload_album(self, album_id:str, path:str):
+    def upload_album(self, album:str, path:str):
+        """ 用于上传文件夹到指定目录
+            :param album: album
+            :param path: 待上传的目录
         """
-            用于上传文件夹到指定目录
-        """
-        res = self.get_album(album_id=album_id)
+        album_id = self.album_path2id_assert(album)
+        res = self.get_album(album_id)
         cur_title = res["resource"]["title"]
         if not res["config"]["is_accessible"]:
             raise RuntimeError(f"{album_id} 不可访问")
@@ -228,14 +276,22 @@ class LycheeClient():
                 self.upload_album(id, tmp_name)
             elif os.path.isfile(tmp_name):
                 # 这里不判断文件是否能够上传 交由api判断 Test: 上传非图片文件、上传视频
-                self._futures.append(self._tasks_pool.submit(self.upload_photo, tmp_name, album_id))
+                self._futures.append(self._tasks_pool.submit(self.upload_photo, album_id, tmp_name))
     
-    # 根据相册路径获取album_id，可能返回多个匹配结果
-    def album_path2id(self, title_path: str):
-        tree_data = self.get_full_tree()
-        path_titles = title_path.strip('/').split('/')
+    def album_path2id(self, album_path: str):
+        """ 根据`album_path`获取`album_id` 可能返回多个匹配结果
+            :param album_path: 相册路径 如果不是`/`开头则返回`[album_path]`本身 如果是`/`则返回`[None]`
+            :return: 返回一个`list`, 内容为所有匹配的`album_id`
+        """
+        if album_path in ["/", None, ""]:
+            return [None]
+
+        if album_path[0] != "/":
+            return [album_path]
         
-        # 创建一个字典来快速查找节点
+        tree_data = self.get_full_tree()
+        path_titles = album_path.strip('/').split('/')
+        
         id_album_dict = {album['id']: album for album in tree_data}
 
         res_list = []
@@ -256,8 +312,25 @@ class LycheeClient():
         find_paths(path_titles.copy(), None)
 
         return res_list
+    
+    def album_path2id_assert(self, title_path:str):
+        """ 和`album_path2id`的区别在于，这个方法不接受多个相册匹配
+            :param title_path: 相册路径
+            :return: 相册id列表
+            :raise: 如果有多个相册或者没有匹配则抛出异常
+        """
+        res = self.album_path2id(title_path)
+        if len(res) != 1:
+            raise RuntimeError(f"{title_path} 有多个匹配结果或者没有匹配结果 {str(res)} 如果允许多个匹配请使用album_path2id")
+        return res[0]
 
     def album_id2path(self, album_id):
+        """ 根据`album_id`获取`album_path`
+        :param album_id: album_id
+        :return: 相册路径
+        """
+        if album_id[0] == '/':
+            return album_id
         tree_data = self.get_full_tree()
         id_album_dict = {album['id']: album for album in tree_data}
         
@@ -360,8 +433,7 @@ if __name__ == "__main__":
  - 下载图片接口放到Session中
  - 下载图片的接口没有设置header，可能对于加密的图片不能直接访问
  - 线程池中的任务异常不会传递出来
- - 实现路径到id的转换
- - 实现自动判断路径和id (路径必须/开头)
+ - 实现分块上传
 
  + search不能搜索_的问题
  + Album接口没办法获取根路径，需要Albums接口，但文档中没有

@@ -1,10 +1,9 @@
-![157_modify](README.assets/157_modify.webp)
 
-这是个对`lychee6`的`v2 api`进行包装的库，并提供一些实用功能。提供了一个简单命令行客户端，如果要二次开发，可以参考`lychee-cli.py`
+这是个对`lychee6`的`v2 api`进行包装的库，并提供一些实用功能。同时提供了一个简单命令行客户端，如果要二次开发，可以参考`lychee-cli.py`
 
-需要注意，目前仅支持`lychee6`以上的版本
+> 需要注意，目前仅支持`lychee6`以上的版本
 
-如果有什么问题，请提issues
+库目前缺少一些细节功能，如果有什么急需的功能，请提issue，如果我有时间，我会尽快实现
 
 # 安装
 
@@ -22,9 +21,11 @@ cd pychee6
 pip3 install .
 ```
 
-安装完毕后可以使用：`python3 -m pychee6.lychee-cli` 来使用cli
+对于库的所有接口，请参考`src/pychee6.py`文件中的`LycheeClient`接口注释
 
-# 一些使用例子
+# 一些cli使用例子
+
+安装完毕后可以通过`python3 -m pychee6.lychee-cli`来使用`cli`
 
 ```shell
 python3 -m pychee6.lychee-cli -h

@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${file}",
             // "args": ["-H", "http://127.0.0.1:8802/", "-u", "root", "-p", "123456", "upload", "/", "img/deepth2"],
-            "args": ["ls", "/一层"],
+            "args": ["ls", "/新相册"],
             "console": "integratedTerminal"
         }
     ]

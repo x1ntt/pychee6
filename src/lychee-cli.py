@@ -34,15 +34,8 @@ class lychee_cli:
                 for photo in res["resource"]["photos"]:
                     print (colored(f"  {photo["title"]}\t{photo["id"]}\t{photo["created_at"]}", "green"))
         else:
-            if album_id[0] == "/":
-                res = self.client.album_path2id(album_id)
-                if len(res) != 1: 
-                    print (f"路径({album_id})对应多个相册或者没有对应相册: {str(res)}")
-                    return 
-                else: 
-                    print (f"路径({album_id})自动转换为id {res[0]}")
-                    album_id = res[0]
             res = self.client.get_album(album_id)
+            print (res)
             id = res["resource"]["id"]
             title = res["resource"]["title"]
             cur_path = self.client.album_id2path(album_id)
@@ -59,18 +52,6 @@ class lychee_cli:
             base_name = Path(files_path).name
             parent_album_id = ""
 
-            if album_id[0] == "/":
-                if album_id != "/":
-                    res = self.client.album_path2id(album_id)
-                    if len(res) != 1: 
-                        print (f"路径({album_id})对应多个相册或者没有对应相册: {str(res)}")
-                        return 
-                    else: 
-                        print (f"路径({album_id})自动转换为id {res[0]}")
-                        album_id = res[0]
-                else:
-                    album_id = ""
-
             if album_id != "":
                 res = self.client.get_album(album_id)
                 for album in res["resource"]["albums"]:
@@ -82,17 +63,9 @@ class lychee_cli:
 
             self.client.upload_album(parent_album_id, files_path)
     
-    def upload_photo(self, album_id, file_path):
+    def upload_photo(self, album:str, file_path:str):
         if os.path.isfile(file_path):
-            if album_id[0] == "/":
-                res = self.client.album_path2id(album_id)
-                if len(res) != 1: 
-                    print (f"路径({album_id})对应多个相册或者没有对应相册: {str(res)}")
-                    return 
-                else: 
-                    print (f"路径({album_id})自动转换为id {res[0]}")
-                    album_id = res[0]
-            self.client.upload_photo(file_path, album_id)
+            self.client.upload_photo(album, file_path)
     
     def download_album(self, album_id:str, save_path:str):
         if album_id in ["/", ""]:
@@ -107,29 +80,9 @@ class lychee_cli:
                 self.client.download_album(album["id"], os.path.join(save_path, album_title))
             self.client.download_album("unsorted", save_path)
         else:
-            if album_id[0] == "/":
-                res = self.client.album_path2id(album_id)
-                if len(res) != 1: 
-                    print (f"路径({album_id})对应多个相册或者没有对应相册: {str(res)}")
-                    return 
-                else: 
-                    print (f"路径({album_id})自动转换为id {res[0]}")
-                    album_id = res[0]
-
             self.client.download_album(album_id, save_path)
     
     def create_album(self, album_name:str, album_id:str):
-        if album_id in ["/", ""]:
-            return self.client.create_album(album_name, "/")
-        elif album_id[0] == "/":
-            res = self.client.album_path2id(album_id)
-            if len(res) != 1: 
-                print (f"路径({album_id})对应多个相册或者没有对应相册: {str(res)}")
-                return 
-            else: 
-                print (f"路径({album_id})自动转换为id {res[0]}")
-                album_id = res[0]
-
         return self.client.create_album(album_name, album_id)
 
     def conv_album_id(self, album_id):
@@ -212,16 +165,12 @@ def main():
     elif args.command in ["list_album", "la"]:
         cli.list_album(args.target, True)
     elif args.command in ["upload_album", "u_a"]:
-        # if args.album_id == "/": args.album_id=""
         cli.upload_album(args.album_id, args.path)
     elif args.command in ["upload_photo", "u_p"]:
-        # if args.album_id == "/": args.album_id=""
         cli.upload_photo(args.album_id, args.path)
     elif args.command in ["download_album", "d_a"]:
-        # if args.album_id == "/": args.album_id=""
         cli.download_album(args.album_id, args.path)
     elif args.command in ["create_album", "c_a"]:
-        # if args.album_id == "/": args.album_id=""
         new_album_id = cli.create_album(args.album_name, args.album_id)
         print (f"新相册id: {new_album_id}")
     elif args.command in ["conv", "c_v"]:
@@ -230,6 +179,5 @@ def main():
     else:
         parser.print_help()
 
-# 这个文件用来测试代码
 if __name__ == '__main__':
     main()
