@@ -66,8 +66,8 @@ class LycheeClient():
 
     def login_by_passwd(self, username:str, password:str):
         """ Log in with your account and password
-        :param username: username
-        :param password: password
+        :param username: [required] username
+        :param password: [required] password
 
         :return: `tuple`: (res:bool, reason:dict)
         """
@@ -75,20 +75,21 @@ class LycheeClient():
             "username": username, 
             "password": password
         })
+
         if r.status_code == 204:
-            return True, r.json()
+            return True, {}
         return False, r.json()
     
     def login_by_token(self, token:str):
         """ You can get this in the settings interface of `lychee`. This interface always returns `True`
-        :param token: token
+        :param token: [required] token
         """
         self._sess._header["Authorization"] = token
         return True
     
     def get_album(self, album:str):
         """ Get album properties and content (including detailed album information and picture information)
-            :param album: album_id/album_path
+            :param album: [required] album_id/album_path
             :return: `dict`, see `./api_demo/get_album.json`
         """
         album_id = self.album_path2id_assert(album)
@@ -105,7 +106,7 @@ class LycheeClient():
 
     def create_album(self, album_name:str, parent_album="/"):
         """ create an album, and return `album_id`
-            :param album_name: album name
+            :param album_name: [required] album name
             :param parent_album: parent album, default is root album
             :return: `str`, album_id
         """
@@ -117,7 +118,7 @@ class LycheeClient():
 
     def delete_albums(self, albums:list):
         """ delete albums
-            :param albums: `album` list
+            :param albums: [required] `album` list
             :return: `int`, is http status code
         """
         id_list = []
@@ -130,9 +131,9 @@ class LycheeClient():
 
     def search(self, terms:str, album="/"):
         """ Search keywords, you can specify the album
-            :param terms: Keywords
+            :param terms: [required] Keywords
             :param album_id: album_id, default is root album
-            :return: 返回一个`dict`
+            :return: `dict`
         """
         album_id = self.album_path2id_assert(album)
         terms = base64.b64encode(terms.encode(encoding="utf-8"))
@@ -144,7 +145,7 @@ class LycheeClient():
     def upload_photo(self, album, upload_filename):
         """ upload to specify the album
             :param album: default is root album
-            :param upload_filename: file path
+            :param upload_filename: [required] file path
             :return: `dict`
         """
         album_id = self.album_path2id_assert(album)
@@ -168,8 +169,8 @@ class LycheeClient():
     
     def move_album(self, target_album:str, albums=[]):
         """ move albums
-            :param target_album: target album
-            :param albums: album_ids that need to be moved, is list
+            :param target_album: target album, if is void, will copy to root album
+            :param albums: [required] album_ids that need to be moved, is list
             :return: `str`
         """
         target_album_id = self.album_path2id_assert(target_album)
@@ -181,8 +182,73 @@ class LycheeClient():
                             "album_id": target_album_id,
                             "album_ids": album_ids
                         })
-        return r.text
+        return r.json() if len(r.text) else {}
+
+    def move_photo(self, target_album:str, photo_ids=[]):
+        """ move photos
+            :param target_album: target album, if is void, will copy to root album
+            :param photos: [required] photo_ids that need to be moved, is list
+            :return: `str`
+        """
+        target_album_id = self.album_path2id_assert(target_album)
+        r = self._sess.post("Photo::move",
+            json={
+                "album_id": target_album_id,
+                "photo_ids": photo_ids
+            })
+        return r.json() if len(r.text) else {}
+
+    def copy_photo(self, target_album:str, photo_ids=[]):
+        """ move photos
+            :param target_album: target album, if is void, will copy to root album
+            :param photos: [required] photo_ids that need to be moved, is list
+            :return: `str`
+        """
+        target_album_id = self.album_path2id_assert(target_album)
+        r = self._sess.post("Photo::copy",
+            json={
+                "album_id": target_album_id,
+                "photo_ids": photo_ids
+            })
+        return r.json() if len(r.text) else {}
     
+    def star_photo(self, is_star:bool, photo_ids=[]):
+        """ Set the is-starred attribute of the given photos
+            :param is_star: [required] star or not
+            :param photos: [required] photo_ids that need to be star, is list
+            :return: `str`
+        """
+        r = self._sess.post("Photo::star",
+            json={
+                "is_starred": is_star,
+                "photo_ids": photo_ids
+            })
+        return r.json() if len(r.text) else {}
+    
+    def rename_photo(self, photo_id:str, title:str):
+        """ Rename a photo
+            :param photo_id: [required] photo_id
+            :param title: [required] new name
+            :return: `str`
+        """
+        r = self._sess.patch("Photo::rename",
+            json={
+                "photo_id": photo_id,
+                "title": title
+            })
+        return r.json() if len(r.text) else {}
+    
+    def delete_photo(self, photo_ids=[]):
+        """ Delete photos
+            :param photos: [required] photo_ids that need to be deleted, is list
+            :return: `str`
+        """
+        r = self._sess.delete("Photo",
+            json={
+                "photo_ids": photo_ids
+            })
+        return r.json() if len(r.text) else {}
+
     def get_full_tree(self):
         """ Get the complete album tree structure
             :return: `dict`, see `./api_demo/get_full_tree.json`
@@ -192,9 +258,9 @@ class LycheeClient():
 
     def download_photo(self, url:str, file_name:str, dist_path:str):
         """ download an photo to specify path
-            :param url: photo url
-            :param file_name: photo name
-            :param dist_path: save path
+            :param url: [required] photo url
+            :param file_name: [required] photo name
+            :param dist_path: [required] save path
         """
         try:
             r = requests.get(url, stream=True)
@@ -208,8 +274,8 @@ class LycheeClient():
 
     def download_album(self, album:str, save_path="./"):
         """ Recursively download an album
-            :param album: album_id/album_path
-            :param save_path: target path
+            :param album: [required] album_id/album_path
+            :param save_path: [required] target path
         """
         # print (f"{album_id}:{save_path}")
         album_id = self.album_path2id_assert(album)
@@ -249,7 +315,7 @@ class LycheeClient():
     def upload_album(self, album:str, path:str):
         """ Used to upload folders to the specified directory
             :param album: album
-            :param path: directory to upload
+            :param path: [required] directory to upload
         """
         album_id = self.album_path2id_assert(album)
         res = self.get_album(album_id)
@@ -275,7 +341,7 @@ class LycheeClient():
     
     def album_path2id(self, album_path: str):
         """ Get `album_id` based on `album_path` may return multiple matching results
-            :param album_path: If the album path does not start with `/`, it returns `[album_path]` itself. If it starts with `/`, it returns `[None]`
+            :param album_path: [required] If the album path does not start with `/`, it returns `[album_path]` itself. If it starts with `/`, it returns `[None]`
             :return: Returns a `list` containing all matching `album_id`
         """
         if album_path in ["/", None, ""]:
@@ -310,9 +376,8 @@ class LycheeClient():
     
     def album_path2id_assert(self, title_path:str):
         """ The difference from `album_path2id` is that this method does not accept multiple album matches
-            :param title_path: album_path
-            :return: album_id list
-            :raise: If there is no unique result, an exception is thrown.
+            :param title_path: [required] album_path
+            :return: album_id list, **:raise RuntimeError:** If there is no unique result, an exception is thrown.
         """
         res = self.album_path2id(title_path)
         if len(res) != 1:
@@ -321,7 +386,7 @@ class LycheeClient():
 
     def album_id2path(self, album_id):
         """ Get `album_path` based on `album_id`
-        :param album_id: album_id
+        :param album_id: [required] album_id
         :return: album_path
         """
         if album_id[0] == '/':
@@ -352,6 +417,13 @@ if __name__ == "__main__":
 
     # with open("api_demo/get_full_tree.json", "w") as f:
     #     f.write(json.dumps(client.get_full_tree(), ensure_ascii=False))
+
+    # print (client.move_photo("",["xi5LK-J01rOhu8EvxpLGxHO5"]))
+    # print (client.copy_photo("NIXGEcGdYzLKgxxlNS8CdReX",["xi5LK-J01rOhu8EvxpLGxHO5"]))
+    # print (client.star_photo(False, ["xi5LK-J01rOhu8EvxpLGxHO5"]))
+    # print (client.rename_photo("xi5LK-J01rOhu8EvxpLGxHO5", "阿乌拉"))
+    # print (client.delete_photo(["JyRgElkcPuHDzGaqzQ47w3vb"]))
+    # print (client.move_album("", ["Gn6aoWZiDMXatPQVMKc6wZm0"]))
 
 
 """

@@ -23,6 +23,12 @@ pip3 install .
 
 对于库的所有接口，请参考`src/pychee6.py`文件中的`LycheeClient`接口注释
 
+# 文档
+
+`pip3 install pdoc`安装`pdoc`
+
+然后你可以通过 `pdoc pychee6.py`的方式生成文档，详细见[pdoc](https://pdoc.dev/docs/pdoc.html)
+
 # 一些cli使用例子
 
 安装完毕后可以通过`python3 -m pychee6.lychee-cli`来使用`cli`
