@@ -142,5 +142,7 @@ python3 -m pychee6.lychee-cli c_v p92kvXqyZUC6M-8CcPAwnCpd
 
 # TODO：
 
-+ 移动指令
-+ 
+- [ ] 跳过已存在文件上传
+- [x] 分段上传以解决大文件上传问题
+- [ ] 针对cover命名的文件直接设置为封面
+- [ ] 考虑下载的时候修复后缀？以解决修改相册名后丢失文件后缀的问题

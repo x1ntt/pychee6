@@ -1,6 +1,7 @@
 from pychee6 import LycheeClient
 from termcolor import colored
 from pathlib import Path
+from concurrent.futures import as_completed
 import argparse
 import os
 
@@ -62,10 +63,14 @@ class lychee_cli:
                 parent_album_id = self.client.create_album(base_name, album_id)
 
             self.client.upload_album(parent_album_id, files_path)
+
+            for future in as_completed(self.client.threadpool_get_futures()):
+                result = future.result()
+                print(result)
     
     def upload_photo(self, album:str, file_path:str):
         if os.path.isfile(file_path):
-            self.client.upload_photo(album, file_path)
+            print (self.client.upload_photo(album, file_path))
     
     def download_album(self, album_id:str, save_path:str):
         if album_id in ["/", ""]:
@@ -81,6 +86,10 @@ class lychee_cli:
             self.client.download_album("unsorted", save_path)
         else:
             self.client.download_album(album_id, save_path)
+        
+        for future in as_completed(self.client.threadpool_get_futures()):
+            result = future.result()
+            print(result)
     
     def create_album(self, album_name:str, album_id:str):
         return self.client.create_album(album_name, album_id)

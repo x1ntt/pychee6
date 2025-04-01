@@ -4,6 +4,7 @@ from concurrent.futures import ThreadPoolExecutor, wait
 import requests
 import base64
 import os
+import math
 
 class LycheeSession(Session):
     def __init__(self, base_url):
@@ -63,6 +64,12 @@ class LycheeClient():
     def wait_tasks(self):
         wait(self._futures)
         self._futures = []
+    
+    def threadpool_shutdown(self):
+        self._tasks_pool.shutdown()
+    
+    def threadpool_get_futures(self):
+        return self._futures
 
     def login_by_passwd(self, username:str, password:str):
         """ Log in with your account and password
@@ -146,26 +153,36 @@ class LycheeClient():
         """ upload to specify the album
             :param album: default is root album
             :param upload_filename: [required] file path
-            :return: `dict`
+            :return: `dict`, eg. {'file_name': '4.jpg', 'extension': '.jpg', 'uuid_name': 'gAA7GDjP-ru1FRsm.jpg', 'stage': 'uploading', 'chunk_number': 1, 'total_chunks': 7}
         """
         album_id = self.album_path2id_assert(album)
+        chunk_size = 1024 * 1024 * 2    # 2M
 
-        with open(upload_filename, "rb") as f:
-            r = self._sess.post("Photo", 
-                        delete_headers=[
-                            "Content-Type"  # requests won't add a boundary if this header is set when you pass files
-                        ],
-                        files={
-                            'album_id': (None, album_id),
-                            # 'file_last_modified_time': (None, '123456'),
-                            'file': f,
-                            'file_name': (None, os.path.basename(upload_filename)),
-                            'uuid_name': (None, ''),
-                            'extension': (None, ''),
-                            'chunk_number': (None, '1'),
-                            'total_chunks': (None, '1'),
-                        })
-            return r.json()
+        file_name = os.path.basename(upload_filename)
+        file_size = os.path.getsize(upload_filename)
+        chunk_count = math.ceil(file_size / chunk_size)
+
+        uuid_name = ''
+        extension = ''
+        for i in range(chunk_count):
+            with open(upload_filename, "rb") as f:
+                r = self._sess.post("Photo", 
+                            delete_headers=[
+                                "Content-Type"  # requests won't add a boundary if this header is set when you pass files
+                            ],
+                            files={
+                                'album_id': (None, album_id),
+                                'file': f,
+                                'file_name': (None, file_name),
+                                'uuid_name': (None, uuid_name),
+                                'extension': (None, extension),
+                                'chunk_number': (None, f'{i+1}'),
+                                'total_chunks': (None, f'{chunk_count}'),
+                            })
+            uuid_name = r.json()['uuid_name']
+            extension = r.json()['extension']
+            # print (r.json())
+        return r.json()
     
     def move_album(self, target_album:str, albums=[]):
         """ move albums
@@ -256,19 +273,19 @@ class LycheeClient():
         r = self._sess.get("Maintenance::fullTree")
         return r.json()
 
-    def download_photo(self, url:str, file_name:str, dist_path:str):
+    def download_photo(self, url:str, save_full_name:str):
         """ download an photo to specify path
             :param url: [required] photo url
-            :param file_name: [required] photo name
-            :param dist_path: [required] save path
+            :param save_full_name: [required] photo name
         """
         try:
             r = requests.get(url, stream=True)
             count = 0
-            with open(os.path.join(dist_path, file_name), "wb") as f:
+            with open(save_full_name, "wb") as f:
                 for item in r.iter_content(10240):
                     count += len(item)
                     f.write(item)
+            return {"url":f"{url}", "file_name":f"{save_full_name}"}
         except Exception as e:
             raise f"Error downloading {url}: {e}"
 
@@ -310,7 +327,7 @@ class LycheeClient():
                 file_name = ".".join(tmp)
             else:
                 self._file_name_list.append(full_name)
-            self._futures.append(self._tasks_pool.submit(self.download_photo, photo_url, file_name, save_path))
+            self._futures.append(self._tasks_pool.submit(self.download_photo, photo_url, full_name))
 
     def upload_album(self, album:str, path:str):
         """ Used to upload folders to the specified directory
