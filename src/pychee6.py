@@ -93,6 +93,12 @@ class LycheeClient():
         """
         self._sess._header["Authorization"] = token
         return True
+
+    def get_all_user(self):
+        """ Get all users
+        :return: `dict`, see `./api_demo/get_all_user.json`
+        """
+        return self._sess.get("UserManagement").json()
     
     def get_album(self, album:str):
         """ Get album properties and content (including detailed album information and picture information)
@@ -378,7 +384,7 @@ class LycheeClient():
             return [album_path]
         
         path_titles = album_path.strip('/').split('/')
-        
+
         tree_data = self.get_full_tree()
         if not isinstance(tree_data, list):
             raise RuntimeError(f"{str(tree_data)}")
@@ -446,8 +452,10 @@ if __name__ == "__main__":
     client.login_by_passwd("root","123456")
     # client.login_by_token("5ic4uQzkOpuAlJApJfIfbA==")
 
-    # with open("api_demo/get_full_tree.json", "w") as f:
-    #     f.write(json.dumps(client.get_full_tree(), ensure_ascii=False))
+    import json
+
+    with open("../api_demo/get_all_user.json", "w") as f:
+        f.write(json.dumps(client.get_all_user(), ensure_ascii=False))
 
     # print (client.move_photo("",["xi5LK-J01rOhu8EvxpLGxHO5"]))
     # print (client.copy_photo("NIXGEcGdYzLKgxxlNS8CdReX",["xi5LK-J01rOhu8EvxpLGxHO5"]))

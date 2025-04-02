@@ -1,0 +1,35 @@
+[
+    {
+        "id": 1,
+        "username": "root",
+        "may_administrate": true,
+        "may_upload": true,
+        "may_edit_own_settings": true,
+        "quota_kb": null,
+        "description": null,
+        "note": null,
+        "space": null
+    },
+    {
+        "id": 2,
+        "username": "ss1",
+        "may_administrate": false,
+        "may_upload": true,
+        "may_edit_own_settings": true,
+        "quota_kb": null,
+        "description": null,
+        "note": null,
+        "space": null
+    },
+    {
+        "id": 3,
+        "username": "ss2",
+        "may_administrate": false,
+        "may_upload": true,
+        "may_edit_own_settings": true,
+        "quota_kb": null,
+        "description": null,
+        "note": null,
+        "space": null
+    }
+]
