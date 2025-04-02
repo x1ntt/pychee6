@@ -358,7 +358,7 @@ class LycheeClient():
         if skip_exist:
             for photo in res["resource"]["photos"]:
                 photo_title_list.append(photo["title"])
-            print (photo_title_list)
+            # print (photo_title_list)
         
         for entry_name in os.listdir(path):
             tmp_name = os.path.join(path, entry_name)
@@ -370,7 +370,7 @@ class LycheeClient():
             elif os.path.isfile(tmp_name):
                 # 这里不判断文件是否能够上传 交由api判断 Test: 上传非图片文件、上传视频
                 if skip_exist and (os.path.basename(entry_name) in photo_title_list):
-                    print (f"{entry_name} is exist")
+                    # print (f"{entry_name} is exist")
                     continue
                 self._futures.append(self._tasks_pool.submit(self.upload_photo, album_id, tmp_name))
     

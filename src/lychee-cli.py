@@ -36,7 +36,7 @@ class lychee_cli:
                     print (colored(f"  {photo["title"]}\t{photo["id"]}\t{photo["created_at"]}", "green"))
         else:
             res = self.client.get_album(album_id)
-            print (res)
+            # print (res)
             id = res["resource"]["id"]
             title = res["resource"]["title"]
             cur_path = self.client.album_id2path(album_id)
