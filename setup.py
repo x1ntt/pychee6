@@ -6,7 +6,7 @@ setup(
     name="pychee6",
     version="0.0.1",
     description="A simple python moudle for Lychee",
-    long_description=open("README.md", "rt").read(),
+    long_description=open("README.md", "rt", encoding="utf-8").read(),
     author="x1nt",
     author_email="cjdty@qq.com",
     url="https://github.com/x1ntt/pychee6",
