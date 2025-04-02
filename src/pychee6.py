@@ -329,10 +329,11 @@ class LycheeClient():
                 self._file_name_list.append(full_name)
             self._futures.append(self._tasks_pool.submit(self.download_photo, photo_url, full_name))
 
-    def upload_album(self, album:str, path:str):
+    def upload_album(self, album:str, path:str, skip_exist=False):
         """ Used to upload folders to the specified directory
             :param album: album
             :param path: [required] directory to upload
+            :param skip_exist: skip exist photo, default is False
         """
         album_id = self.album_path2id_assert(album)
         res = self.get_album(album_id)
@@ -345,6 +346,12 @@ class LycheeClient():
                 continue
             title_id_map[album["title"]] = album["id"]
         
+        photo_title_list = []
+        if skip_exist:
+            for photo in res["resource"]["photos"]:
+                photo_title_list.append(photo["title"])
+            print (photo_title_list)
+        
         for entry_name in os.listdir(path):
             tmp_name = os.path.join(path, entry_name)
             if os.path.isdir(tmp_name):
@@ -354,6 +361,9 @@ class LycheeClient():
                 self.upload_album(id, tmp_name)
             elif os.path.isfile(tmp_name):
                 # 这里不判断文件是否能够上传 交由api判断 Test: 上传非图片文件、上传视频
+                if skip_exist and (os.path.basename(entry_name) in photo_title_list):
+                    print (f"{entry_name} is exist")
+                    continue
                 self._futures.append(self._tasks_pool.submit(self.upload_photo, album_id, tmp_name))
     
     def album_path2id(self, album_path: str):
