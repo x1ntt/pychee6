@@ -377,9 +377,11 @@ class LycheeClient():
         if album_path[0] != "/":
             return [album_path]
         
-        tree_data = self.get_full_tree()
         path_titles = album_path.strip('/').split('/')
         
+        tree_data = self.get_full_tree()
+        if not isinstance(tree_data, list):
+            raise RuntimeError(f"{str(tree_data)}")
         id_album_dict = {album['id']: album for album in tree_data}
 
         res_list = []
@@ -419,6 +421,8 @@ class LycheeClient():
         if album_id[0] == '/':
             return album_id
         tree_data = self.get_full_tree()
+        if not isinstance(tree_data, list):
+            raise RuntimeError(f"{str(tree_data)}")
         id_album_dict = {album['id']: album for album in tree_data}
         
         if album_id not in id_album_dict:
