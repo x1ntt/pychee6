@@ -26,6 +26,9 @@ class lychee_cli:
     def list_album(self, album_id:str, only_album=False):
         if album_id == "/":
             res = self.client.get_albums()
+            if "message" in res.keys():
+                print (res)
+                return 
             print (f"--------- {colored("root", "cyan")} ")
             for album in res["albums"]:
                 print (colored(f"+ {album["title"]}\t{album["id"]}\t{album["created_at"]}", "blue"))
@@ -36,7 +39,9 @@ class lychee_cli:
                     print (colored(f"  {photo["title"]}\t{photo["id"]}\t{photo["created_at"]}", "green"))
         else:
             res = self.client.get_album(album_id)
-            # print (res)
+            if "message" in res.keys():
+                print (res)
+                return 
             id = res["resource"]["id"]
             title = res["resource"]["title"]
             cur_path = self.client.album_id2path(album_id)
@@ -95,6 +100,9 @@ class lychee_cli:
     def create_album(self, album_name:str, album_id:str):
         return self.client.create_album(album_name, album_id)
 
+    def delete_album(self, album_id:str):
+        return self.client.delete_albums([album_id])
+
     def conv_album_id(self, album_id):
         if album_id[0] == "/":
             print (self.client.album_path2id(album_id))
@@ -130,6 +138,9 @@ def main():
     create_album_arg = subargs.add_parser("create_album", aliases=["c_a"], help="创建相册，album_id为'/'则在根相册创建")
     create_album_arg.add_argument("album_id", help="父相册id，可以为'/'开头的相册路径")
     create_album_arg.add_argument("album_name", help="新相册的名字")
+
+    delete_album_arg = subargs.add_parser("delete_album", aliases=["del_a"], help="删除指定相册")
+    delete_album_arg.add_argument("album_id", help="需要删除的相册id")
 
     list_arg = subargs.add_parser("list", aliases=["ls"], prog="list <dist> <album_id/album_path>", help="列出相册和图片")
     list_arg.add_argument("target", nargs="?", default="/", help="可以是相册id或者'/'开头的相册路径，如果以'-'开头，则需要在前面补充--，形如list -- -iw78289")
@@ -184,6 +195,8 @@ def main():
     elif args.command in ["create_album", "c_a"]:
         new_album_id = cli.create_album(args.album_name, args.album_id)
         print (f"新相册id: {new_album_id}")
+    elif args.command in ["delete_album", "del_a"]:
+        print (cli.delete_album(args.album_id))
     elif args.command in ["conv", "c_v"]:
         if args.album_id:
             cli.conv_album_id(args.album_id)

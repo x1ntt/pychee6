@@ -138,6 +138,8 @@ class LycheeClient():
         """
         id_list = []
         for album in albums:
+            if album in ["/", None]:
+                continue
             id_list.append(self.album_path2id_assert(album))
 
         return self._sess.delete("Album", json={
