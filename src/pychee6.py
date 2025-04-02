@@ -30,6 +30,8 @@ class LycheeSession(Session):
         url = self._base_url + self._api_version + url
         self._set_csrf_header()
 
+        # print (f"{method} {url}")
+
         if "headers" in kwargs:
             headers = self._header.copy()
             headers.update(kwargs["headers"])
@@ -373,7 +375,7 @@ class LycheeClient():
                 self._futures.append(self._tasks_pool.submit(self.upload_photo, album_id, tmp_name))
     
     def album_path2id(self, album_path: str):
-        """ Get `album_id` based on `album_path` may return multiple matching results
+        """ Get `album_id` based on `album_path` may return multiple matching results. if you are not root user, will use get_album to get album_id, which requires multiple requests.
             :param album_path: [required] If the album path does not start with `/`, it returns `[album_path]` itself. If it starts with `/`, it returns `[None]`
             :return: Returns a `list` containing all matching `album_id`
         """
@@ -384,13 +386,32 @@ class LycheeClient():
             return [album_path]
         
         path_titles = album_path.strip('/').split('/')
+        res_list = []
 
         tree_data = self.get_full_tree()
-        if not isinstance(tree_data, list):
-            raise RuntimeError(f"{str(tree_data)}")
-        id_album_dict = {album['id']: album for album in tree_data}
+        if isinstance(tree_data, dict): # may be {'message': 'Insufficient privileges', 'exception': 'UnauthorizedException'}
+            if tree_data['message']=="Insufficient privileges":
+                # print (f"无权限 尝试通过get_album获取album_id")
+                def find_id(album_id, path_titles_part):
+                    if len(path_titles_part) == 0:
+                        return [album_id]
+                    albums = self.get_album(album_id)["resource"]["albums"]
+                    if len(albums) == 0:
+                        return []
+                    for album in albums:
+                        if album['title'] == path_titles_part[0]:
+                            return find_id(album['id'], path_titles_part[1:])
+                    return []
+                        
+                albums = self.get_albums()["albums"]
+                for album in albums:
+                    if album['title'] == path_titles[0]:
+                        res_list += find_id(album['id'], path_titles[1:])
+                return res_list
+            else:
+                raise RuntimeError(f"{str(tree_data)}")
 
-        res_list = []
+        id_album_dict = {album['id']: album for album in tree_data}
 
         def find_paths(path_titles, cur_id):
             if len(path_titles) == 0:
@@ -420,21 +441,34 @@ class LycheeClient():
         return res[0]
 
     def album_id2path(self, album_id):
-        """ Get `album_path` based on `album_id`
+        """ Get `album_path` based on `album_id`. if you are not root user, will use get_album to get album_id, which requires multiple requests.
         :param album_id: [required] album_id
         :return: album_path
         """
         if album_id[0] == '/':
             return album_id
         tree_data = self.get_full_tree()
-        if not isinstance(tree_data, list):
-            raise RuntimeError(f"{str(tree_data)}")
+        path = []
+
+        if isinstance(tree_data, dict): # may be {'message': 'Insufficient privileges', 'exception': 'UnauthorizedException'}
+            if tree_data['message']=="Insufficient privileges":
+                # print ("无权限，通过get_album获取album_path")
+                path = []
+                while True:
+                    album_info = self.get_album(album_id)
+                    path.insert(0, album_info["resource"]["title"])
+                    if album_info["resource"]["parent_id"] == None:
+                        break
+                    album_id = album_info["resource"]["parent_id"]
+                return "/"+"/".join(path)
+            else:
+                raise RuntimeError(f"{str(tree_data)}")
+        
         id_album_dict = {album['id']: album for album in tree_data}
         
         if album_id not in id_album_dict:
             return ""
-
-        path = []
+        
         cur_id = album_id
         while True:
             album = id_album_dict.get(cur_id, None)
