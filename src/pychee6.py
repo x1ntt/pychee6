@@ -339,15 +339,15 @@ class LycheeClient():
                 self._file_name_list.append(full_name)
             self._futures.append(self._tasks_pool.submit(self.download_photo, photo_url, full_name))
 
-    def upload_album(self, album:str, path:str, skip_exist=False):
+    def upload_album(self, album:str, path:str, skip_exist_photo=False):
         """ Used to upload folders to the specified directory
             :param album: album
             :param path: [required] directory to upload
-            :param skip_exist: skip exist photo, default is False
+            :param skip_exist_photo: skip exist photo, default is False
         """
         album_id = self.album_path2id_assert(album)
         res = self.get_album(album_id)
-        cur_title = res["resource"]["title"]
+        # cur_title = res["resource"]["title"]
         if not res["config"]["is_accessible"]:
             raise RuntimeError(f"{album_id} Not accessible")
         title_id_map = {}
@@ -357,7 +357,7 @@ class LycheeClient():
             title_id_map[album["title"]] = album["id"]
         
         photo_title_list = []
-        if skip_exist:
+        if skip_exist_photo:
             for photo in res["resource"]["photos"]:
                 photo_title_list.append(photo["title"])
             # print (photo_title_list)
@@ -371,7 +371,7 @@ class LycheeClient():
                 self.upload_album(id, tmp_name)
             elif os.path.isfile(tmp_name):
                 # 这里不判断文件是否能够上传 交由api判断 Test: 上传非图片文件、上传视频
-                if skip_exist and (os.path.basename(entry_name) in photo_title_list):
+                if skip_exist_photo and (os.path.basename(entry_name) in photo_title_list):
                     # print (f"{entry_name} is exist")
                     continue
                 self._futures.append(self._tasks_pool.submit(self.upload_photo, album_id, tmp_name))

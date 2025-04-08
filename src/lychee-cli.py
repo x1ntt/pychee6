@@ -43,7 +43,7 @@ class lychee_cli:
                 print (res)
                 return 
             id = res["resource"]["id"]
-            title = res["resource"]["title"]
+            # title = res["resource"]["title"]
             cur_path = self.client.album_id2path(album_id)
             print (f"--------- {colored(cur_path, "cyan")} [{id}]")
             for album in res["resource"]["albums"]:
@@ -53,13 +53,18 @@ class lychee_cli:
                 for photo in res["resource"]["photos"]:
                     print (colored(f"  {photo["title"]}\t{photo["id"]}\t{photo["created_at"]}", "green"))
     
-    def upload_album(self, album_id, files_path, skip_exist=False):
-        # print (f"upload_album {album_id} {files_path} {skip_exist}")
+    def upload_album(self, album_id, files_path, skip_exist_photo=False):
+        # print (f"upload_album {album_id} {files_path} {skip_exist_photo}")
         if os.path.isdir(files_path):
             base_name = Path(files_path).name
             parent_album_id = ""
 
-            if album_id != "":
+            if album_id in ["/", "", None]:
+                res = self.client.get_albums()
+                for album in res["albums"]:
+                    if base_name == album["title"]:
+                        parent_album_id = album["id"]
+            elif album_id != "":
                 res = self.client.get_album(album_id)
                 for album in res["resource"]["albums"]:
                     if base_name == album["title"]:
@@ -68,7 +73,7 @@ class lychee_cli:
             if parent_album_id == "":
                 parent_album_id = self.client.create_album(base_name, album_id)
 
-            self.client.upload_album(parent_album_id, files_path, skip_exist)
+            self.client.upload_album(parent_album_id, files_path, skip_exist_photo)
 
             for future in as_completed(self.client.threadpool_get_futures()):
                 result = future.result()
@@ -125,7 +130,7 @@ def main():
     upload_album_arg = subargs.add_parser("upload_album", aliases=["u_a"], help="自动创建相册，album_id为'/'则上传到根相册")
     upload_album_arg.add_argument("album_id", help="相册id，可以为'/'开头的相册路径")
     upload_album_arg.add_argument("path", help="需要上传的目录")
-    upload_album_arg.add_argument("--skip_exist", action='store_true', help="跳过已经存在的图片，需要注意相册中图片如果改名不会跳过")
+    upload_album_arg.add_argument("--skip_exist_photo", action='store_true', help="根据标题名跳过已经存在的图片")
 
     upload_photo_arg = subargs.add_parser("upload_photo", aliases=["u_p"], help="上传图片到相册，album_id为'/'则上传到未分类")
     upload_photo_arg.add_argument("album_id", help="相册id，可以为'/'开头的相册路径")
@@ -187,7 +192,7 @@ def main():
     elif args.command in ["list_album", "la"]:
         cli.list_album(args.target, True)
     elif args.command in ["upload_album", "u_a"]:
-        cli.upload_album(args.album_id, args.path, args.skip_exist)
+        cli.upload_album(args.album_id, args.path, args.skip_exist_photo)
     elif args.command in ["upload_photo", "u_p"]:
         cli.upload_photo(args.album_id, args.path)
     elif args.command in ["download_album", "d_a"]:
