@@ -75,15 +75,19 @@ class lychee_cli:
 
             self.client.upload_album(parent_album_id, files_path, skip_exist_photo)
 
+            futures = self.client.threadpool_get_futures()
+            count = 0
             for future in as_completed(self.client.threadpool_get_futures()):
                 result = future.result()
-                print(result)
+                count += 1
+                print(f" {count}/{len(futures)} {result}")
     
     def upload_photo(self, album:str, file_path:str):
         if os.path.isfile(file_path):
             print (self.client.upload_photo(album, file_path))
     
     def download_album(self, album_id:str, save_path:str):
+        os.makedirs(save_path, exist_ok=True)
         if album_id in ["/", ""]:
             downloaded_title = []
             for album in self.client.get_albums()["albums"]:
@@ -98,9 +102,12 @@ class lychee_cli:
         else:
             self.client.download_album(album_id, save_path)
         
-        for future in as_completed(self.client.threadpool_get_futures()):
+        futures = self.client.threadpool_get_futures()
+        count = 0
+        for future in as_completed(futures):
             result = future.result()
-            print(result)
+            count += 1
+            print(f" {count}/{len(futures)} {result}")
     
     def create_album(self, album_name:str, album_id:str):
         return self.client.create_album(album_name, album_id)

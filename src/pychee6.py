@@ -286,8 +286,14 @@ class LycheeClient():
     def download_photo(self, url:str, save_full_name:str):
         """ download an photo to specify path
             :param url: [required] photo url
-            :param save_full_name: [required] photo name
+            :param save_full_name: [required] photo name, If there is no extension, it will be automatically appended to ensure that it can be opened as a picture
         """
+
+        save_ext = save_full_name.split('.')[-1]
+        url_ext = url.split('.')[-1]
+        if save_ext != url_ext:
+            save_full_name = f"{save_full_name}.{url_ext}"
+
         try:
             r = requests.get(url, stream=True)
             count = 0

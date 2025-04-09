@@ -4,7 +4,7 @@ requirements = open("requirements.txt").read().split("\n")
 
 setup(
     name="pychee6",
-    version="0.0.4",
+    version="0.0.5",
     description="A simple python moudle for Lychee",
     long_description=open("README.md", "rt", encoding="utf-8").read(),
     author="x1nt",
