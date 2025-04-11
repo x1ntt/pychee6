@@ -7,8 +7,9 @@ import os
 
 # 这个类用来封装一些常用操作
 class lychee_cli:
-    def __init__(self, host:str):
-        self.client = LycheeClient(host)
+    def __init__(self, host:str, verbose:bool, max_thread):
+        self.client = LycheeClient(host, verbose, max_thread)
+        self.verbose = verbose
 
     def login(self, token:str=None, username:str=None, password:str=None):
         ret = True
@@ -55,6 +56,7 @@ class lychee_cli:
     
     def upload_album(self, album_id, files_path, skip_exist_photo=False):
         # print (f"upload_album {album_id} {files_path} {skip_exist_photo}")
+        files_path = os.path.abspath(files_path)
         if os.path.isdir(files_path):
             base_name = Path(files_path).name
             parent_album_id = ""
@@ -131,6 +133,8 @@ def main():
     parser.add_argument("-u", "--user", help="用户名 可以通过环境变量 LYCHEE_USERNAME 提供")
     parser.add_argument("-p", "--passwd", help="密码 可以通过环境变量 LYCHEE_PASSWORD 提供")
     parser.add_argument("-H", "--host", help="服务器地址，形如: http://exp.com:8808/ 可以通过环境变量 LYCHEE_HOST 提供")
+    parser.add_argument("-m", "--max_thread", default=5, help="线程池大小 影响上传下载数量，默认为5")
+    parser.add_argument("-v", "--verbose", action='store_true', help="输出调试信息")
 
     subargs = parser.add_subparsers(dest='command')
 
@@ -190,7 +194,7 @@ def main():
         parser.print_help()
         return 
     
-    cli = lychee_cli(lychee_host)
+    cli = lychee_cli(lychee_host, args.verbose, int(args.max_thread))
     if not cli.login(lychee_token, lychee_username, lychee_password):
         return
 

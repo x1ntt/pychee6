@@ -52,12 +52,13 @@ class LycheeClient():
     + `album_id`: The album id must be a string of 24 bytes in length. for example: `1NIXGEcGdYzLKgxxlNS8CdReX`
     + `album_path`: The album path must start with `/`. If there is only `/`, it means the root album
     """
-    def __init__(self, base_url:str, max_workers:int=5):
+    def __init__(self, base_url:str, verbose:bool, max_workers:int=5):
         """ 
             :param base_url: Lychee API address 如 `http://127.0.0.1:5000/`
             :param max_workers: Maximum number of download threads
         """
         self._sess = LycheeSession(base_url)
+        self._verbose = verbose
 
         self._tasks_pool = ThreadPoolExecutor(max_workers=max_workers)
         self._futures = []
@@ -174,24 +175,28 @@ class LycheeClient():
 
         uuid_name = ''
         extension = ''
-        for i in range(chunk_count):
-            with open(upload_filename, "rb") as f:
-                r = self._sess.post("Photo", 
-                            delete_headers=[
-                                "Content-Type"  # requests won't add a boundary if this header is set when you pass files
-                            ],
-                            files={
-                                'album_id': (None, album_id),
-                                'file': f,
-                                'file_name': (None, file_name),
-                                'uuid_name': (None, uuid_name),
-                                'extension': (None, extension),
-                                'chunk_number': (None, f'{i+1}'),
-                                'total_chunks': (None, f'{chunk_count}'),
-                            })
-            uuid_name = r.json()['uuid_name']
-            extension = r.json()['extension']
-            # print (r.json())
+        try:
+            for i in range(chunk_count):
+                with open(upload_filename, "rb") as f:
+                    r = self._sess.post("Photo", 
+                                delete_headers=[
+                                    "Content-Type"  # requests won't add a boundary if this header is set when you pass files
+                                ],
+                                files={
+                                    'album_id': (None, album_id),
+                                    'file': f,
+                                    'file_name': (None, file_name),
+                                    'uuid_name': (None, uuid_name),
+                                    'extension': (None, extension),
+                                    'chunk_number': (None, f'{i+1}'),
+                                    'total_chunks': (None, f'{chunk_count}'),
+                                })
+                uuid_name = r.json()['uuid_name']
+                extension = r.json()['extension']
+        except Exception as e:
+            print (r.json())
+            print (f"album: {album}, upload_filename: {upload_filename}")
+            raise e
         return r.json()
     
     def move_album(self, target_album:str, albums=[]):
@@ -354,6 +359,9 @@ class LycheeClient():
         album_id = self.album_path2id_assert(album)
         res = self.get_album(album_id)
         # cur_title = res["resource"]["title"]
+        if self._verbose:
+            print (f"album_id: {album_id}, album: {album}")
+            print (res)
         if not res["config"]["is_accessible"]:
             raise RuntimeError(f"{album_id} Not accessible")
         title_id_map = {}

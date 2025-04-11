@@ -146,3 +146,6 @@ python3 -m pychee6.lychee-cli c_v p92kvXqyZUC6M-8CcPAwnCpd
 - [x] 分段上传以解决大文件上传问题
 - [ ] 上传目录时，如果发现cover命名的文件直接设置为封面
 - [x] 考虑下载的时候修复后缀？以解决修改相册名后丢失文件后缀的问题
+- [ ] Ctrl+C 安全关闭
+- [ ] {'message': 'File format not supported', 'exception': 'MediaFileUnsupportedException'}
+- [ ] 合理的错误传递
