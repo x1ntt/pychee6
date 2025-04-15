@@ -193,6 +193,8 @@ class LycheeClient():
                                 })
                 uuid_name = r.json()['uuid_name']
                 extension = r.json()['extension']
+        except KeyError as e:
+            return r.json()
         except Exception as e:
             print (r.json())
             print (f"album: {album}, upload_filename: {upload_filename}")
