@@ -75,14 +75,20 @@ class lychee_cli:
             if parent_album_id == "":
                 parent_album_id = self.client.create_album(base_name, album_id)
 
-            self.client.upload_album(parent_album_id, files_path, skip_exist_photo)
+            try:
+                self.client.upload_album(parent_album_id, files_path, skip_exist_photo)
 
-            futures = self.client.threadpool_get_futures()
-            count = 0
-            for future in as_completed(self.client.threadpool_get_futures()):
-                result = future.result()
-                count += 1
-                print(f" {count}/{len(futures)} {result}")
+                futures = self.client.threadpool_get_futures()
+                count = 0
+                for future in as_completed(futures):
+                    result = future.result()
+                    count += 1
+                    print(f" {count}/{len(futures)} {result}")
+            except KeyboardInterrupt:
+                futures = self.client.threadpool_get_futures()
+                for future in futures:
+                    if not future.running():
+                        future.cancel()
     
     def upload_photo(self, album:str, file_path:str):
         if os.path.isfile(file_path):

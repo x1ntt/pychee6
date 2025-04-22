@@ -68,8 +68,8 @@ class LycheeClient():
         wait(self._futures)
         self._futures = []
     
-    def threadpool_shutdown(self):
-        self._tasks_pool.shutdown()
+    def threadpool_shutdown(self, wait:bool=True):
+        self._tasks_pool.shutdown(wait)
     
     def threadpool_get_futures(self):
         return self._futures

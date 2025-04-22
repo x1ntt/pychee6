@@ -146,7 +146,7 @@ python3 -m pychee6.lychee-cli c_v p92kvXqyZUC6M-8CcPAwnCpd
 - [x] 分段上传以解决大文件上传问题
 - [ ] 上传目录时，如果发现cover命名的文件直接设置为封面
 - [x] 考虑下载的时候修复后缀？以解决修改相册名后丢失文件后缀的问题
-- [ ] Ctrl+C 安全关闭
+- [x] Ctrl+C 安全关闭多线程
 - [x] 合理的错误传递，{'message': 'File format not supported', 'exception': 'MediaFileUnsupportedException'}
 - [ ] 图片标题抹除工具
 - [ ] ~~部分图片上传title变为Photo，并且title有被截断的现象（如果图片信息中包含标题，lychee优先使用标题信息作为标题从而忽略文件名，如果有需要可以上传之前抹除图片标题信息）~~
