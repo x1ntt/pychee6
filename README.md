@@ -3,7 +3,8 @@
 
 > 需要注意，目前仅支持`lychee6`以上的版本
 
-库目前缺少一些细节功能，如果有什么急需的功能，请提issue，如果我有时间，我会尽快实现
+目前仍在开发，可能会有些不稳定，如果有问题或者急需的功能，请提issue，如果我有时间，我会尽快实现
+It is still under development and may be a little unstable. If you have any questions or urgently needed features, please raise an issue. If I have time, I will implement it as soon as possible.
 
 # 安装
 
@@ -62,6 +63,31 @@ options:
   -p PASSWD, --passwd PASSWD
                         密码 可以通过环境变量 LYCHEE_PASSWORD 提供
   -H HOST, --host HOST  服务器地址，形如: http://exp.com:8808/ 可以通过环境变量 LYCHEE_HOST 提供
+```
+# English version
+```shell
+Usage: lychee-cli.py [-h] [-t TOKEN] [-u USER] [-p PASSWD] [-H HOST] [-m MAX_THREAD] [-v] {upload_album,u_a,upload_photo,u_p,download_album,d_a,create_album,c_a,delete_album,del_a,list,ls,list_album,la,conv,c_v} ...
+This is the CLI version of LycheeClient, which you can use as an example of how to use the library. In most cases, you can use album_id or album path as parameters.
+album_id is a 24-character string, such as b4noPnuHQSSCXZL_IMsLEGAJ.
+The album path is a string starting with /, such as /depth_1/depth_2. A single / represents the root directory or "unsorted" category.
+Positional arguments:
+{upload_album,u_a,upload_photo,u_p,download_album,d_a,create_album,c_a,delete_album,del_a,list,ls,list_album,la,conv,c_v}
+upload_album (u_a): Automatically create an album. If album_id is /, upload to the root album.
+upload_photo (u_p): Upload photos to an album. If album_id is /, upload to the "unsorted" category.
+download_album (d_a): Download an album. If album_id is /, download everything.
+create_album (c_a): Create an album. If album_id is /, create in the root album.
+delete_album (del_a): Delete a specified album.
+list (ls): List albums and photos.
+list_album (la): Display albums only.
+conv (c_v): Convert between album_id and album_path.
+Options:
+-h, --help: Show this help message and exit.
+-t, --token TOKEN: The API token required for login. Either this or the username is required. Can be provided via the LYCHEE_TOKEN environment variable.
+-u, --user USER: Username. Can be provided via the LYCHEE_USERNAME environment variable.
+-p, --passwd PASSWD: Password. Can be provided via the LYCHEE_PASSWORD environment variable.
+-H, --host HOST: Server address, such as http://exp.com:8808/. Can be provided via the LYCHEE_HOST environment variable.
+-m, --max_thread MAX_THREAD: Size of the thread pool, affecting the number of uploads/downloads. Default is 5.
+-v, --verbose: Output debug information.
 ```
 
 ## 登录
