@@ -54,6 +54,22 @@ class lychee_cli:
                 for photo in res["resource"]["photos"]:
                     print (colored(f"  {photo["title"]}\t{photo["id"]}\t{photo["created_at"]}", "green"))
     
+    def wait_task(self):
+        try:
+            futures = self.client.threadpool_get_futures()
+            count = 0
+            for future in as_completed(futures):
+                result = future.result()
+                count += 1
+                print(f" {count}/{len(futures)} {result}")
+        except KeyboardInterrupt:
+            futures = self.client.threadpool_get_futures()
+            for future in futures:
+                if not future.running():
+                    future.cancel()
+        except Exception as e:
+            raise e
+
     def upload_album(self, album_id, files_path, skip_exist_photo=False):
         # print (f"upload_album {album_id} {files_path} {skip_exist_photo}")
         files_path = os.path.abspath(files_path)
@@ -75,20 +91,11 @@ class lychee_cli:
             if parent_album_id == "":
                 parent_album_id = self.client.create_album(base_name, album_id)
 
-            try:
-                self.client.upload_album(parent_album_id, files_path, skip_exist_photo)
+            self.client.upload_album(parent_album_id, files_path, skip_exist_photo)
+            self.wait_task()
+        else:
+            print (f"{files_path} 不是一个合法的目录或者它不存在")
 
-                futures = self.client.threadpool_get_futures()
-                count = 0
-                for future in as_completed(futures):
-                    result = future.result()
-                    count += 1
-                    print(f" {count}/{len(futures)} {result}")
-            except KeyboardInterrupt:
-                futures = self.client.threadpool_get_futures()
-                for future in futures:
-                    if not future.running():
-                        future.cancel()
     
     def upload_photo(self, album:str, file_path:str):
         if os.path.isfile(file_path):
@@ -110,12 +117,7 @@ class lychee_cli:
         else:
             self.client.download_album(album_id, save_path)
         
-        futures = self.client.threadpool_get_futures()
-        count = 0
-        for future in as_completed(futures):
-            result = future.result()
-            count += 1
-            print(f" {count}/{len(futures)} {result}")
+        self.wait_task()
     
     def create_album(self, album_name:str, album_id:str):
         return self.client.create_album(album_name, album_id)
@@ -144,7 +146,7 @@ def main():
 
     subargs = parser.add_subparsers(dest='command')
 
-    upload_album_arg = subargs.add_parser("upload_album", aliases=["u_a"], help="自动创建相册，album_id为'/'则上传到根相册")
+    upload_album_arg = subargs.add_parser("upload_album", aliases=["u_a"], help="上传相册，album_id为'/'则上传到根相册")
     upload_album_arg.add_argument("album_id", help="相册id，可以为'/'开头的相册路径")
     upload_album_arg.add_argument("path", help="需要上传的目录")
     upload_album_arg.add_argument("--skip_exist_photo", action='store_true', help="根据标题名跳过已经存在的图片")

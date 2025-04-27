@@ -350,7 +350,7 @@ class LycheeClient():
                 file_name = ".".join(tmp)
             else:
                 self._file_name_list.append(full_name)
-            self._futures.append(self._tasks_pool.submit(self.download_photo, photo_url, full_name))
+            self._futures.append(self._tasks_pool.submit(self.download_photo, photo_url, os.path.join(save_path, file_name)))
 
     def upload_album(self, album:str, path:str, skip_exist_photo=False):
         """ Used to upload folders to the specified directory
