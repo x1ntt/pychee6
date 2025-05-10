@@ -196,7 +196,7 @@ class LycheeClient():
         except KeyError as e:
             return r.json()
         except Exception as e:
-            print (r.json())
+            print (r.text)
             print (f"album: {album}, upload_filename: {upload_filename}")
             raise e
         return r.json()

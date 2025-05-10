@@ -16,10 +16,10 @@ def remove_title(file_name, sub_path): # 如果文件有只读属性，建议提
 
         try:
             with pyexiv2.ImageData(f.read()) as img:
-                if len(img.read_exif())!=0 or len(img.read_xmp())!=0:
+                if len(img.read_exif())!=0 or len(img.read_xmp())!=0 or len(img.read_iptc())!=0:
                     img.modify_exif({"Exif.Image.ImageDescription":None,"Exif.Image.XPTitle":None})
                     img.modify_xmp({"Xmp.dc.title":None,"Xmp.dc.description":None})
-                    
+                    img.modify_iptc({"Iptc.Application2.BylineTitle":None,"Iptc.Application2.Caption":None})
                     if sub_path == '':
                         f.seek(0)
                         f.truncate()
