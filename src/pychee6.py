@@ -167,7 +167,7 @@ class LycheeClient():
             :return: `dict`, eg. {'file_name': '4.jpg', 'extension': '.jpg', 'uuid_name': 'gAA7GDjP-ru1FRsm.jpg', 'stage': 'uploading', 'chunk_number': 1, 'total_chunks': 7}
         """
         album_id = self.album_path2id_assert(album)
-        chunk_size = 1024 * 1024 * 2    # 2M
+        chunk_size = 1024 * 1024 * 25    # 2M
 
         file_name = os.path.basename(upload_filename)
         file_size = os.path.getsize(upload_filename)
@@ -176,28 +176,28 @@ class LycheeClient():
         uuid_name = ''
         extension = ''
         try:
-            for i in range(chunk_count):
-                with open(upload_filename, "rb") as f:
+            with open(upload_filename, "rb") as f:
+                for i in range(chunk_count):
+                    chunk_data = f.read(chunk_size)
                     r = self._sess.post("Photo", 
                                 delete_headers=[
                                     "Content-Type"  # requests won't add a boundary if this header is set when you pass files
                                 ],
                                 files={
                                     'album_id': (None, album_id),
-                                    'file': f,
+                                    'file': ('chunk', chunk_data, 'application/octet-stream'),
                                     'file_name': (None, file_name),
                                     'uuid_name': (None, uuid_name),
                                     'extension': (None, extension),
                                     'chunk_number': (None, f'{i+1}'),
                                     'total_chunks': (None, f'{chunk_count}'),
                                 })
-                uuid_name = r.json()['uuid_name']
-                extension = r.json()['extension']
+                    uuid_name = r.json()['uuid_name']
+                    extension = r.json()['extension']
         except KeyError as e:
             return r.json()
         except Exception as e:
-            print (r.text)
-            print (f"album: {album}, upload_filename: {upload_filename}")
+            print (f"album: {album}, upload_filename: {upload_filename}, full response: {r.text}")
             raise e
         return r.json()
     

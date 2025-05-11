@@ -10,16 +10,27 @@ orin_pwd = os.getcwd()
 # print (img.read_iptc())
 # print (img.read_xmp())
 
+def display(img):
+    print (img.read_exif())
+    print (img.read_iptc())
+    print (img.read_xmp())
+    print (img.read_raw_xmp())
+    print (img.read_comment())
+    print (img.read_icc())
+    print (img.read_thumbnail())
+
 def remove_title(file_name, sub_path): # 如果文件有只读属性，建议提供第二个参数不修改原文件
     with open(file_name, ['rb','rb+'][sub_path=='']) as f:
         target_file = os.path.join(orin_pwd, sub_path, file_name)
 
         try:
             with pyexiv2.ImageData(f.read()) as img:
+                # display(img)
                 if len(img.read_exif())!=0 or len(img.read_xmp())!=0 or len(img.read_iptc())!=0:
                     img.modify_exif({"Exif.Image.ImageDescription":None,"Exif.Image.XPTitle":None})
                     img.modify_xmp({"Xmp.dc.title":None,"Xmp.dc.description":None})
-                    img.modify_iptc({"Iptc.Application2.BylineTitle":None,"Iptc.Application2.Caption":None})
+                    img.modify_iptc({"Iptc.Application2.BylineTitle":None,"Iptc.Application2.Caption":None,'Iptc.Application2.ObjectName': None,'Iptc.Application2.Byline':None,'Iptc.Application2.Headline':None})
+                    # img.clear_iptc()
                     if sub_path == '':
                         f.seek(0)
                         f.truncate()
@@ -28,12 +39,13 @@ def remove_title(file_name, sub_path): # 如果文件有只读属性，建议提
                         with open(target_file, 'wb') as f2:
                             f2.write(img.get_bytes())
                 else:
-                    print (f"{file_name} 没有元数据，直接复制", (orin_pwd, sub_path, file_name),img.read_exif(),img.read_iptc(),img.read_xmp())
+                    # print (f"{file_name} 没有元数据，直接复制", (orin_pwd, sub_path, file_name),img.read_exif(),img.read_iptc(),img.read_xmp())
                     shutil.copy(file_name, target_file)
         except Exception as e:
             print (f"{file_name} 处理错误: {str(e)}")
             logging.exception(e)
-            shutil.copy(file_name, target_file)
+            if sub_path != '':
+                shutil.copy(file_name, target_file)
 
 if len(sys.argv) == 3:
     src = sys.argv[1]
@@ -54,8 +66,9 @@ if len(sys.argv) == 3:
             for filename in filenames:
                 tmp_filename = os.path.join(dirpath,filename)
                 count+=1
-                print(f"文件：{tmp_filename}, {count}")
+                if count%100 == 0:
+                    print(f"文件：{tmp_filename}, {count}")
 
                 remove_title(tmp_filename, sub_path)
 else:
-    print (f"用来删除图片的标题和描述信息\n {sys.argv[0]} <src file/path> <dst path>; \n dst 为-时直接修改原文件")
+    print (f"用来删除图片的标题和描述信息\n {sys.argv[0]} <src file/path> <dst path>; \n dst 为-时直接修改原文件，但如果文件为只读会修改失败")

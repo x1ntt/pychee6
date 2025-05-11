@@ -61,7 +61,8 @@ class lychee_cli:
             for future in as_completed(futures):
                 result = future.result()
                 count += 1
-                print(f" {count}/{len(futures)} {result}")
+                if count%100 == 0:
+                    print(f" {count}/{len(futures)} {result}")
         except KeyboardInterrupt:
             futures = self.client.threadpool_get_futures()
             for future in futures:
