@@ -2,8 +2,10 @@ from pychee6 import LycheeClient
 from termcolor import colored
 from pathlib import Path
 from concurrent.futures import as_completed
+from context_menu import menus
 import argparse
 import os
+import sys
 
 # 这个类用来封装一些常用操作
 class lychee_cli:
@@ -135,6 +137,54 @@ class lychee_cli:
                 print (res)
             else: 
                 print (f"找不到 {album_id} 对应的相册")
+    
+    def reg_context(self):
+        try:
+            self.unreg_context()
+        except:
+            pass
+        # python_path = sys.executable
+        root = menus.ContextMenu('Upload to Lychee', type='FILES')
+        root.add_items([
+                menus.ContextCommand('✨刷新(如果相册有修改)', command=f"? -m pychee6.cli reg_context", command_vars=["PYTHONLOC"]),
+                menus.ContextCommand('❌取消注册', command=f"? -m pychee6.cli unreg_context", command_vars=["PYTHONLOC"]),
+                menus.ContextCommand('🔻上传到此处', command=f"? -m pychee6.cli u_p / ?", command_vars=["PYTHONLOC",'FILENAME']),
+            ])
+        
+        def get_items(parent, album_id):
+            res = self.client.get_album(album_id)
+            for album in res["resource"]["albums"]:
+                tmp = menus.ContextMenu(album["title"])
+                tmp.add_items([
+                    menus.ContextCommand(f'🔻上传到此处', command=f"? -m pychee6.cli u_p {album['id']} ?", command_vars=["PYTHONLOC",'FILENAME'])
+                ])
+                get_items(tmp, album["id"])
+                parent.add_items([tmp])
+                print (album["title"], len(parent.sub_items))
+
+        res = self.client.get_albums()
+        for album in res["albums"]:
+            tmp = menus.ContextMenu(album["title"])
+            tmp.add_items([
+                menus.ContextCommand(f'🔻上传到此处', command=f"? -m pychee6.cli u_p {album['id']} ?", command_vars=["PYTHONLOC",'FILENAME'])
+            ])
+            get_items(tmp, album["id"])
+            root.add_items([tmp])
+            print (album["title"], len(root.sub_items))
+
+        def display_menu(menu):
+            print(f"Menu: {menu.name}")
+            for item in menu.sub_items:
+                if isinstance(item, menus.ContextMenu):
+                    display_menu(item)
+                else:
+                    print(f"  - {item.name} (Command: {item.command})")
+
+        display_menu(root)
+        root.compile()
+    
+    def unreg_context(self):
+        menus.removeMenu("Upload to Lychee", type='FILES')
 
 def main():
     parser = argparse.ArgumentParser(description="这是LycheeClient的cli版本，你可以把这个当作库的使用示例。\n大多数情况下，你可以使用album_id或者相册路径为参数。\n\talbum_id是一个24位长度的字符串形如：b4noPnuHQSSCXZL_IMsLEGAJ。\n\t相册路径是以/开头的字符串形如：/deepth_1/deepth_2。其中单独的/表示根目录或者说未分类", formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -175,6 +225,9 @@ def main():
 
     conv_arg = subargs.add_parser("conv", aliases=["c_v"], help="album_id和album_path互相转换")
     conv_arg.add_argument("album_id", help="album_id 和 album_path 相互转换，相册路径需以'/'开头")
+
+    reg_context_arg = subargs.add_parser("reg_context", help="将上传下载功能注册到鼠标上下文菜单中")
+    unreg_context_arg = subargs.add_parser("unreg_context", help="取消注册鼠标上下文菜单中的上传下载功能")
 
     args = parser.parse_args()
     # print (args)
@@ -225,6 +278,10 @@ def main():
     elif args.command in ["conv", "c_v"]:
         if args.album_id:
             cli.conv_album_id(args.album_id)
+    elif args.command in ["reg_context"]:
+        cli.reg_context()
+    elif args.command in ["unreg_context"]:
+        cli.unreg_context()
     else:
         parser.print_help()
 

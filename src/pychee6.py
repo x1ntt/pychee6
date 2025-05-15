@@ -167,7 +167,9 @@ class LycheeClient():
             :return: `dict`, eg. {'file_name': '4.jpg', 'extension': '.jpg', 'uuid_name': 'gAA7GDjP-ru1FRsm.jpg', 'stage': 'uploading', 'chunk_number': 1, 'total_chunks': 7}
         """
         album_id = self.album_path2id_assert(album)
-        chunk_size = 1024 * 1024 * 25    # 2M
+        if album_id == None:
+            album_id = "unsorted"
+        chunk_size = 1024 * 1024 * 25    # 25M
 
         file_name = os.path.basename(upload_filename)
         file_size = os.path.getsize(upload_filename)
