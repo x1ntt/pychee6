@@ -52,7 +52,7 @@ class LycheeClient():
     + `album_id`: The album id must be a string of 24 bytes in length. for example: `1NIXGEcGdYzLKgxxlNS8CdReX`
     + `album_path`: The album path must start with `/`. If there is only `/`, it means the root album
     """
-    def __init__(self, base_url:str, verbose:bool, max_workers:int=5):
+    def __init__(self, base_url:str, verbose:bool=False, max_workers:int=5):
         """ 
             :param base_url: Lychee API address 如 `http://127.0.0.1:5000/`
             :param max_workers: Maximum number of download threads
@@ -159,6 +159,16 @@ class LycheeClient():
             "terms": terms.decode(),
             "album_id": album_id
         }).json()
+    
+    def get_target_list_albums(self, album_ids:list=[]):
+        """ Get the list of albums that can be moved to
+            :param album_ids: album_ids, Return all albums except those in the list
+            :return: `dict`, see `./api_demo/get_target_list_albums.json`
+        """
+        data = {}
+        if len(album_ids) > 0:
+            data["album_ids"] = album_ids
+        return self._sess.get("Album::getTargetListAlbums", json=data).json()
 
     def upload_photo(self, album, upload_filename):
         """ upload to specify the album
@@ -498,6 +508,68 @@ class LycheeClient():
                 break
 
         return "/"+"/".join(path)
+    
+    def get_album_tree(self):
+        """ Build album tree structure
+            :return: `list`, tree structure
+        """
+        albums = self.get_target_list_albums()
+        albums_map = {album["id"]: {**album, "children": []} for album in albums}
+    
+        tree = []
+    
+        duplicate_titles = {}
+        for album in albums:
+            title = album["title"]
+            if title in duplicate_titles:
+                duplicate_titles[title].append(album["id"])
+            else:
+                duplicate_titles[title] = [album["id"]]
+        duplicate_titles = {k: v for k, v in duplicate_titles.items() if len(v) > 1}
+    
+        get_album_cache = {}
+    
+        def get_parent_id(album_id):
+            if album_id in get_album_cache:
+                return get_album_cache[album_id]
+            try:
+                album_info = self.get_album(album_id)
+                parent_id = album_info["resource"].get("parent_id")
+                get_album_cache[album_id] = parent_id
+                return parent_id
+            except Exception as e:
+                return None
+    
+        for title, album_ids in duplicate_titles.items():
+            for album_id in album_ids:
+                get_parent_id(album_id)
+    
+        for album in albums:
+            album_id = album["id"]
+            title = album["title"]
+            
+            if title in duplicate_titles:
+                parent_id = get_album_cache.get(album_id)
+                if parent_id and parent_id in albums_map:
+                    albums_map[parent_id]["children"].append(albums_map[album_id])
+                else:
+                    tree.append(albums_map[album_id])
+            else:
+                title_parts = title.split("/")
+                if len(title_parts) == 1:
+                    tree.append(albums_map[album_id])
+                else:
+                    parent_title = "/".join(title_parts[:-1])
+                    parent = next(
+                        (a for a in albums if a["title"] == parent_title),
+                        None
+                    )
+                    if parent:
+                        albums_map[parent["id"]]["children"].append(albums_map[album_id])
+                    else:
+                        tree.append(albums_map[album_id])
+
+        return tree
 
 if __name__ == "__main__":
     client = LycheeClient("http://127.0.0.1:8802/")
@@ -508,8 +580,10 @@ if __name__ == "__main__":
 
     import json
 
-    with open("../api_demo/get_all_user.json", "w") as f:
-        f.write(json.dumps(client.get_all_user(), ensure_ascii=False))
+    # with open("../api_demo/get_target_list_albums.json", "w") as f:
+    #     f.write(json.dumps(client.get_target_list_albums(), ensure_ascii=False))
+
+    print (json.dumps(client.get_album_tree(), ensure_ascii=False))
 
     # print (client.move_photo("",["xi5LK-J01rOhu8EvxpLGxHO5"]))
     # print (client.copy_photo("NIXGEcGdYzLKgxxlNS8CdReX",["xi5LK-J01rOhu8EvxpLGxHO5"]))
