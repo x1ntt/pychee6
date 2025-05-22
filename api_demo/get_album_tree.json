@@ -1,0 +1,268 @@
+[
+    {
+        "id": "NIXGEcGdYzLKgxxlNS8CdReX",
+        "title": "新相册",
+        "original": "新相册",
+        "short_title": "新相册",
+        "thumb": "http://127.0.0.1:8802/uploads/thumb/19/bf/cf270db5f7be23e6f1e29e8302fa.jpeg",
+        "children": [
+            {
+                "id": "_qWj85gTyTGGLdZUHPRM2IRQ",
+                "title": "新相册/二层",
+                "original": "二层",
+                "short_title": "新相册/二层",
+                "thumb": "http://127.0.0.1:8802/img/no_images.svg",
+                "children": []
+            }
+        ]
+    },
+    {
+        "id": "Gn6aoWZiDMXatPQVMKc6wZm0",
+        "title": "tmp",
+        "original": "tmp",
+        "short_title": "tmp",
+        "thumb": "http://127.0.0.1:8802/uploads/thumb/0a/7d/167e69b53e61cedaa312d0094997.jpeg",
+        "children": [
+            {
+                "id": "j1MxtNRgiIs0gG64y4xtGTAU",
+                "title": "tmp/1",
+                "original": "1",
+                "short_title": "tmp/1",
+                "thumb": "http://127.0.0.1:8802/img/no_images.svg",
+                "children": []
+            }
+        ]
+    },
+    {
+        "id": "k3J7eo2GajH6a3ard8K-4rVK",
+        "title": "相册2",
+        "original": "相册2",
+        "short_title": "相册2",
+        "thumb": "http://127.0.0.1:8802/uploads/thumb/f9/a9/a0fc53610e437bb7fca891a109b2.jpeg",
+        "children": []
+    },
+    {
+        "id": "vh-JEMpilSIePW7Q1jDau9rH",
+        "title": "1122",
+        "original": "1122",
+        "short_title": "1122",
+        "thumb": "http://127.0.0.1:8802/img/no_images.svg",
+        "children": []
+    },
+    {
+        "id": "igZW445c9wYo2st-yWJCtxDq",
+        "title": "顶级相册",
+        "original": "顶级相册",
+        "short_title": "顶级相册",
+        "thumb": "http://127.0.0.1:8802/uploads/small/e7/3d/41873125f18ea41a73733518b4a3.webp",
+        "children": []
+    },
+    {
+        "id": "InS9XZZfLjVu1i5ECVuyyQlf",
+        "title": "tmp",
+        "original": "tmp",
+        "short_title": "tmp",
+        "thumb": "http://127.0.0.1:8802/img/no_images.svg",
+        "children": [
+            {
+                "id": "m0SNi44uCxlHYE1yD1QExHED",
+                "title": "tmp/1",
+                "original": "1",
+                "short_title": "tmp/1",
+                "thumb": "http://127.0.0.1:8802/img/no_images.svg",
+                "children": []
+            }
+        ]
+    },
+    {
+        "id": "igYXFEIoY2Klp8KgcQpTzKuV",
+        "title": "Pictures",
+        "original": "Pictures",
+        "short_title": "Pictures",
+        "thumb": "http://127.0.0.1:8802/uploads/small/e7/3d/41873125f18ea41a73733518b4a3.webp",
+        "children": [
+            {
+                "id": "HciGFXNlCqmDaMwZVzCSExVN",
+                "title": "Pictures/Camera Roll",
+                "original": "Camera Roll",
+                "short_title": "Pictures/Camera Roll",
+                "thumb": "http://127.0.0.1:8802/img/no_images.svg",
+                "children": []
+            },
+            {
+                "id": "U-ONlBLO81HfeQUHa1dv1gyY",
+                "title": "Pictures/Feedback",
+                "original": "Feedback",
+                "short_title": "Pictures/Feedback",
+                "thumb": "http://127.0.0.1:8802/img/no_images.svg",
+                "children": [
+                    {
+                        "id": "q-8Ieo9t5LiNc0CdDfT69XjT",
+                        "title": "Pictures/Feedback/{449DCB02-BE49-4964-9291-AFCDDCB0CD13}",
+                        "original": "{449DCB02-BE49-4964-9291-AFCDDCB0CD13}",
+                        "short_title": "Pictures/Feedback/{449DCB02-BE49-4964-9291-AFCDDCB0CD13}",
+                        "thumb": "http://127.0.0.1:8802/img/no_images.svg",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "id": "0zPgCphlr3PiNt6LpX_3DYnz",
+                "title": "Pictures/Saved Pictures",
+                "original": "Saved Pictures",
+                "short_title": "Pictures/Saved Pictures",
+                "thumb": "http://127.0.0.1:8802/img/no_images.svg",
+                "children": []
+            },
+            {
+                "id": "l8PZirVLoPNJChXaD4so8Cir",
+                "title": "Pictures/Screenshots",
+                "original": "Screenshots",
+                "short_title": "Pictures/Screenshots",
+                "thumb": "http://127.0.0.1:8802/uploads/thumb/14/6d/07b14394a6cf825c388483d29da1.jpeg",
+                "children": []
+            },
+            {
+                "id": "J5vXrX7bDEEUj00ttRQhC7tl",
+                "title": "Pictures/精拍",
+                "original": "精拍",
+                "short_title": "Pictures/精拍",
+                "thumb": "http://127.0.0.1:8802/img/no_images.svg",
+                "children": []
+            },
+            {
+                "id": "bx-asf_ydKTYxeDl0NRBD0pP",
+                "title": "Pictures/表情包",
+                "original": "表情包",
+                "short_title": "Pictures/表情包",
+                "thumb": "http://127.0.0.1:8802/uploads/thumb/93/39/ee459eb75632fccd3da74ed7e576.jpeg",
+                "children": [
+                    {
+                        "id": "jcRkeLLSkmJ2VIjMShntE8NF",
+                        "title": "Pictures/表情包/out",
+                        "original": "out",
+                        "short_title": "Pictures/表情包/out",
+                        "thumb": "http://127.0.0.1:8802/uploads/thumb/53/79/eb541bb6086b56e0d56a55522422.jpeg",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "id": "uaNlVW8IjrF4_m4ALZr_ifT9",
+                "title": "Pictures/图片",
+                "original": "图片",
+                "short_title": "Pictures/图片",
+                "thumb": "http://127.0.0.1:8802/uploads/small/c6/b1/6f2f76d6d6afc680ea95ee7836dc.jpg",
+                "children": []
+            },
+            {
+                "id": "Xo3kPbemOYKP_tbwyp7CWdcn",
+                "title": "Pictures/头像",
+                "original": "头像",
+                "short_title": "Pictures/头像",
+                "thumb": "http://127.0.0.1:8802/uploads/thumb/fd/90/2dbd34d8dba429faa0737d17c28e.jpeg",
+                "children": [
+                    {
+                        "id": "RtUX1v8yf3b05fjkMaTvtaEv",
+                        "title": "Pictures/头像/.vscode",
+                        "original": ".vscode",
+                        "short_title": "Pictures/头像/.vscode",
+                        "thumb": "http://127.0.0.1:8802/img/no_images.svg",
+                        "children": []
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": "TCDPHeGmhLgveUTfxND5BXtv",
+        "title": "Pictures",
+        "original": "Pictures",
+        "short_title": "Pictures",
+        "thumb": "http://127.0.0.1:8802/uploads/thumb/4b/c2/97712a48f083c4f69f7ca3c09ed1.jpeg",
+        "children": [
+            {
+                "id": "92dh-qLhdBlwqPhdT_ePG-mn",
+                "title": "Pictures/Camera Roll",
+                "original": "Camera Roll",
+                "short_title": "Pictures/Camera Roll",
+                "thumb": "http://127.0.0.1:8802/img/no_images.svg",
+                "children": []
+            },
+            {
+                "id": "h2ypIGqVUfAajZ8-3xY8rruY",
+                "title": "Pictures/Feedback",
+                "original": "Feedback",
+                "short_title": "Pictures/Feedback",
+                "thumb": "http://127.0.0.1:8802/img/no_images.svg",
+                "children": [
+                    {
+                        "id": "2JbV-ZgxJE_6T9pR1yxc4-uW",
+                        "title": "Pictures/Feedback/{449DCB02-BE49-4964-9291-AFCDDCB0CD13}",
+                        "original": "{449DCB02-BE49-4964-9291-AFCDDCB0CD13}",
+                        "short_title": "Pictures/Feedback/{449DCB02-BE49-4964-9291-AFCDDCB0CD13}",
+                        "thumb": "http://127.0.0.1:8802/img/no_images.svg",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "id": "g3orfZSeAOBvK1QyDVCa-EUI",
+                "title": "Pictures/Saved Pictures",
+                "original": "Saved Pictures",
+                "short_title": "Pictures/Saved Pictures",
+                "thumb": "http://127.0.0.1:8802/img/no_images.svg",
+                "children": []
+            },
+            {
+                "id": "eWdR3s_5vJDkprsnRMoUn09I",
+                "title": "Pictures/Screenshots",
+                "original": "Screenshots",
+                "short_title": "Pictures/Screenshots",
+                "thumb": "http://127.0.0.1:8802/uploads/thumb/4b/c2/97712a48f083c4f69f7ca3c09ed1.jpeg",
+                "children": []
+            },
+            {
+                "id": "12o33qhvVomeUYiM9f3yLVda",
+                "title": "Pictures/精拍",
+                "original": "精拍",
+                "short_title": "Pictures/精拍",
+                "thumb": "http://127.0.0.1:8802/img/no_images.svg",
+                "children": []
+            },
+            {
+                "id": "BehO4OoaW6bq-Y6g8_UTSMkf",
+                "title": "Pictures/表情包",
+                "original": "表情包",
+                "short_title": "Pictures/表情包",
+                "thumb": "http://127.0.0.1:8802/uploads/thumb/93/39/ee459eb75632fccd3da74ed7e576.jpeg",
+                "children": [
+                    {
+                        "id": "P0MnWxCbkjSexLAeKeL3uyAe",
+                        "title": "Pictures/表情包/out",
+                        "original": "out",
+                        "short_title": "Pictures/表情包/out",
+                        "thumb": "http://127.0.0.1:8802/uploads/thumb/53/79/eb541bb6086b56e0d56a55522422.jpeg",
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "id": "mEAT8qdJ5Wl4h571TRon3XTO",
+                "title": "Pictures/图片",
+                "original": "图片",
+                "short_title": "Pictures/图片",
+                "thumb": "http://127.0.0.1:8802/uploads/small/c6/b1/6f2f76d6d6afc680ea95ee7836dc.jpg",
+                "children": []
+            },
+            {
+                "id": "MvPGTyI5lerCbs0cYqnSVDue",
+                "title": "Pictures/头像",
+                "original": "头像",
+                "short_title": "Pictures/头像",
+                "thumb": "http://127.0.0.1:8802/uploads/thumb/e1/cc/e083205c351f6388f79a6708018c.jpeg",
+                "children": []
+            }
+        ]
+    }
+]

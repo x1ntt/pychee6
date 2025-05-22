@@ -513,8 +513,12 @@ class LycheeClient():
         """ Build album tree structure
             :return: `list`, tree structure
         """
-        albums = self.get_target_list_albums()
-        albums_map = {album["id"]: {**album, "children": []} for album in albums}
+        try:
+            albums = self.get_target_list_albums()
+            albums_map = {album["id"]: {**album, "children": []} for album in albums}
+        except Exception as e:
+            print (f"get_album_tree {str(e)} albums: {albums}")
+            raise e
     
         tree = []
     
@@ -578,12 +582,12 @@ if __name__ == "__main__":
     client.login_by_passwd("root","123456")
     # client.login_by_token("5ic4uQzkOpuAlJApJfIfbA==")
 
-    import json
+    # import json
 
-    # with open("../api_demo/get_target_list_albums.json", "w") as f:
-    #     f.write(json.dumps(client.get_target_list_albums(), ensure_ascii=False))
+    # with open("../api_demo/get_album_tree.json", "w") as f:
+    #     f.write(json.dumps(client.get_album_tree(), ensure_ascii=False))
 
-    print (json.dumps(client.get_album_tree(), ensure_ascii=False))
+    # print (json.dumps(client.get_album_tree(), ensure_ascii=False))
 
     # print (client.move_photo("",["xi5LK-J01rOhu8EvxpLGxHO5"]))
     # print (client.copy_photo("NIXGEcGdYzLKgxxlNS8CdReX",["xi5LK-J01rOhu8EvxpLGxHO5"]))
