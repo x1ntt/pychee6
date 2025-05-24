@@ -6,6 +6,7 @@ from context_menu import menus
 import argparse
 import os
 import sys
+import json
 
 # 这个类用来封装一些常用操作
 class lychee_cli:
@@ -33,7 +34,11 @@ class lychee_cli:
                 print (res)
                 return 
             print (f"--------- {colored("root", "cyan")} ")
+            # print (json.dumps(res, ensure_ascii=False))
             for album in res["albums"]:
+                print (colored(f"+ {album["title"]}\t{album["id"]}\t{album["created_at"]}", "blue"))
+
+            for album in res["shared_albums"]:  # 有时相册会出现在这里
                 print (colored(f"+ {album["title"]}\t{album["id"]}\t{album["created_at"]}", "blue"))
 
             if not only_album:
