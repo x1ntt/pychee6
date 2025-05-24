@@ -3,6 +3,7 @@ from termcolor import colored
 from pathlib import Path
 from concurrent.futures import as_completed
 from context_menu import menus
+from tqdm import tqdm
 import argparse
 import os
 import sys
@@ -64,12 +65,12 @@ class lychee_cli:
     def wait_task(self):
         try:
             futures = self.client.threadpool_get_futures()
-            count = 0
-            for future in as_completed(futures):
-                result = future.result()
-                count += 1
-                if count%100 == 0:
-                    print(f" {count}/{len(futures)} {result}")
+            with tqdm(total=len(futures)) as pbar:
+                for i, future in enumerate(as_completed(futures)):
+                    result = future.result()
+                    if result.get("message", None) != None:
+                        print(f"{colored(str(result), "red")}")
+                    pbar.update(1)
         except KeyboardInterrupt:
             futures = self.client.threadpool_get_futures()
             for future in futures:

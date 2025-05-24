@@ -207,8 +207,8 @@ class LycheeClient():
                     uuid_name = r.json()['uuid_name']
                     extension = r.json()['extension']
         except KeyError as e:
-            return r.json()
-        except Exception as e:
+            return {"message": f"upload_filename: {upload_filename}, album: {album}","raw": r.json()}
+        except Exception as e:  # 交给上层处理
             print (f"album: {album}, upload_filename: {upload_filename}, full response: {r.text}")
             raise e
         return r.json()
@@ -322,7 +322,8 @@ class LycheeClient():
                     f.write(item)
             return {"url":f"{url}", "file_name":f"{save_full_name}"}
         except Exception as e:
-            raise f"Error downloading {url}: {e}"
+            return {"message":f"Error download {e}", "url":f"{url}", "file_name":f"{save_full_name}"}
+            
 
     def download_album(self, album:str, save_path="./"):
         """ Recursively download an album
