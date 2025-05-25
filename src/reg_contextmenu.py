@@ -182,15 +182,16 @@ class ShellExtension:
         if self.context.isBackground: # download
             path = os.path.join(dir,title)
             os.makedirs(path, exist_ok=True)
-            commandLine = f'start cmd.exe /k python.exe -m pychee6.cli d_a {album_id} "{path}"'
-            res = subprocess.Popen(commandLine, shell=True, cwd=dir)
+            commandLine = f'start cmd.exe /k python.exe -m pychee6.cli d_a -- {album_id} "{path}"'
+            print (subprocess.Popen(commandLine, shell=True, cwd=dir))
+            
         else: # upload
             for s in self.context.selection:
                 if os.path.isdir(s):
-                    commandLine = f'start cmd.exe /k python.exe -m pychee6.cli u_a {album_id} "{s}"'
+                    commandLine = f'start cmd.exe /k python.exe -m pychee6.cli u_a -- {album_id} "{s}"'
                 elif os.path.isfile(s):
-                    commandLine = f'start cmd.exe /k python.exe -m pychee6.cli u_p {album_id} "{s}"'
-                res = subprocess.Popen(commandLine, shell=True, cwd=dir)
+                    commandLine = f'start cmd.exe /k python.exe -m pychee6.cli u_p -- {album_id} "{s}"'
+                print (subprocess.Popen(commandLine, shell=True, cwd=dir))
 
     def GetCommandString(self, cmd, typ):
         return "LycheeCli"
