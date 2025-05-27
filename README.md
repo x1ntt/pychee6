@@ -1,5 +1,5 @@
 
-这是个对`lychee6`的`v2 api`进行包装的库，并提供一些实用功能。同时提供了一个简单命令行客户端`lychee-cli.py`，如果要二次开发，可以参考它
+这是个对`lychee6`的`v2 api`进行包装的库，并提供一些实用功能。同时提供了一个简单命令行客户端`lychee-cli.py`，如果要使用`pychee6`，可以参考它
 
 > 需要注意，目前仅支持`lychee6`以上的版本
 
@@ -144,9 +144,12 @@ python3 -m pychee6.cli c_v p92kvXqyZUC6M-8CcPAwnCpd
 ## 将上传下载功能注册到资源管理的上下文菜单
 
 ### 对于windows
+
+详见这里：[x1ntt/pychee6_cm](https://github.com/x1ntt/pychee6_cm)
+
 ```shell
-python3 -m pychee6.reg_contextmenu --register   # 注册
-python3 -m pychee6.reg_contextmenu --unregister # 取消注册
+python3 -m pychee6_cm --register   # 注册
+python3 -m pychee6_cm --unregister # 取消注册
 ```
 
 ### 对于linux
