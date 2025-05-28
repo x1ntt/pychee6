@@ -162,7 +162,7 @@ class lychee_cli:
             for album in res["resource"]["albums"]:
                 tmp = menus.ContextMenu(album["title"])
                 tmp.add_items([
-                    menus.ContextCommand(f'🔻上传到此处', command=f"? -m pychee6.cli u_p {album['id']} ?", command_vars=["PYTHONLOC",'FILENAME'])
+                    menus.ContextCommand(f'🔻上传到此处', command=f"? -m pychee6.cli u_p -- {album['id']} ?", command_vars=["PYTHONLOC",'FILENAME'])
                 ])
                 get_items(tmp, album["id"])
                 parent.add_items([tmp])
@@ -172,7 +172,7 @@ class lychee_cli:
         for album in res["albums"]:
             tmp = menus.ContextMenu(album["title"])
             tmp.add_items([
-                menus.ContextCommand(f'🔻上传到此处', command=f"? -m pychee6.cli u_p {album['id']} ?", command_vars=["PYTHONLOC",'FILENAME'])
+                menus.ContextCommand(f'🔻上传到此处', command=f"? -m pychee6.cli u_p -- {album['id']} ?", command_vars=["PYTHONLOC",'FILENAME'])
             ])
             get_items(tmp, album["id"])
             root.add_items([tmp])
