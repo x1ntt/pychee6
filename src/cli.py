@@ -110,21 +110,31 @@ class lychee_cli:
         if os.path.isfile(file_path):
             print (self.client.upload_photo(album, file_path))
     
-    def download_album(self, album_id:str, save_path:str):
-        os.makedirs(save_path, exist_ok=True)
-        if album_id in ["/", ""]:
+    def download_album(self, album:str, save_path:str):
+        if album in ["/", ""]:
             downloaded_title = []
-            for album in self.client.get_albums()["albums"]:
+            save_path = os.path.join(save_path,"lychee_root")
+            os.makedirs(save_path, exist_ok=True)
+            res = self.client.get_albums()
+            all_albums = res["albums"] + res["shared_albums"]
+            for album in all_albums:
                 album_id = album["id"]
                 album_title = album["title"]
                 if album_title in downloaded_title:
-                    album_title += f".[{album["id"]}]"
+                    album_title += f".[{album_id}]"
                 else:
                     downloaded_title.append(album_title)
-                self.client.download_album(album["id"], os.path.join(save_path, album_title))
+                self.client.download_album(album_id, os.path.join(save_path, album_title))
             self.client.download_album("unsorted", save_path)
         else:
-            self.client.download_album(album_id, save_path)
+
+            if album[0] == "/":
+                album_title = album.split("/")[-1]
+            else:
+                album_title = self.client.get_album(album)["resource"]["title"]
+            save_path = os.path.join(save_path, album_title)
+
+            self.client.download_album(album, save_path)
         
         self.wait_task()
     
