@@ -1,0 +1,165 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-30 16:30+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: cli.py:108
+#, python-brace-format
+msgid "'{path}' is not a valid directory or it does not exist"
+msgstr "'{path}' 不是一个合法的目录或者它不存在"
+
+#: cli.py:157
+#, python-brace-format
+msgid "Cannot find album for ID: {id}"
+msgstr "找不到 {id} 对应的相册"
+
+#: cli.py:165
+msgid "Upload to Lychee"
+msgstr "上传到 Lychee"
+
+#: cli.py:167
+msgid "✨Refresh (if album modified)"
+msgstr "✨刷新(如果相册有修改)"
+
+#: cli.py:168
+msgid "❌Unregister"
+msgstr "❌取消注册"
+
+#: cli.py:169
+msgid "🔻Upload here"
+msgstr "🔻上传到此处"
+
+#: cli.py:220
+msgid "This is the CLI version of LycheeClient, which can be used as an example of library usage.\nIn most cases, you can use album_id or album path as parameters.\n\talbum_id is a 24-character string like: b4noPnuHQSSCXZL_IMsLEGAJ\n\tAlbum path starts with / like: /depth_1/depth_2. Single / represents root directory or unsorted\n\tFor issues or suggestions, please create an issue at: https://github.com/x1ntt/pychee6 😉"
+msgstr "这是LycheeClient的cli版本，你可以把这个当作库的使用示例。\n大多数情况下，你可以使用album_id或者相册路径为参数。\n\talbum_id是一个24位长度的字符串形如：b4noPnuHQSSCXZL_IMsLEGAJ。\n\t相册路径是以/开头的字符串形如：/deepth_1/deepth_2。其中单独的/表示根目录或者说未分类\n\t如果有问题或者建议欢迎提出issue: https://github.com/x1ntt/pychee6 😉"
+
+#: cli.py:227
+msgid "API token required for login, alternative to username. Can be provided via LYCHEE_TOKEN environment variable"
+msgstr "登录所需要的api token，与用户名二选一 可以通过 LYCHEE_TOKEN 环境变量提供"
+
+#: cli.py:228
+msgid "Username. Can be provided via LYCHEE_USERNAME environment variable"
+msgstr "用户名 可以通过环境变量 LYCHEE_USERNAME 提供"
+
+#: cli.py:229
+msgid "Password. Can be provided via LYCHEE_PASSWORD environment variable"
+msgstr "密码 可以通过环境变量 LYCHEE_PASSWORD 提供"
+
+#: cli.py:230
+msgid "Server address, like: http://exp.com:8808/. Can be provided via LYCHEE_HOST environment variable"
+msgstr "服务器地址，形如: http://exp.com:8808/ 可以通过环境变量 LYCHEE_HOST 提供"
+
+#: cli.py:231
+msgid "Thread pool size affecting upload/download count, default is 5"
+msgstr "线程池大小 影响上传下载数量，默认为5"
+
+#: cli.py:232
+msgid "Output debug information"
+msgstr "输出调试信息"
+
+#: cli.py:237
+msgid "Upload album, album_id as '/' then upload to root album"
+msgstr "上传相册，album_id为'/'则上传到根相册"
+
+#: cli.py:239 cli.py:248 cli.py:255
+msgid "Album id, can be '/' leading album path"
+msgstr "相册id，可以为'/'开头的相册路径"
+
+#: cli.py:241
+msgid "Path to upload directory"
+msgstr "需要上传的目录"
+
+#: cli.py:243
+msgid "Based on title name skip existing photos"
+msgstr "根据标题名跳过已经存在的图片"
+
+#: cli.py:246
+msgid "Upload photo to album, album_id as '/' then upload to unsorted"
+msgstr "上传图片到相册，album_id为'/'则上传到未分类"
+
+#: cli.py:250
+msgid "Path to upload photo"
+msgstr "需要上传的图片"
+
+#: cli.py:253
+msgid "Download album, album_id as '/' then download all"
+msgstr "下载相册，album_id为'/'则下载所有"
+
+#: cli.py:257
+msgid "Download target directory"
+msgstr "下载的目标目录"
+
+#: cli.py:260
+msgid "Create album, album_id as '/' then create album in root"
+msgstr "创建相册，album_id为'/'则在根相册创建"
+
+#: cli.py:262
+msgid "Parent album id, can be '/' leading album path"
+msgstr "父相册id，可以为'/'开头的相册路径"
+
+#: cli.py:264
+msgid "New album name"
+msgstr "新相册的名字"
+
+#: cli.py:267
+msgid "Delete specified album"
+msgstr "删除指定相册"
+
+#: cli.py:269
+msgid "Album id to delete"
+msgstr "需要删除的相册id"
+
+#: cli.py:273
+msgid "List album and photos"
+msgstr "列出相册和图片"
+
+#: cli.py:275
+msgid "Can be album id or '/' leading album path, if it starts with '-', then need to add '--', like list -- -iw78289"
+msgstr "可以是相册id或者'/'开头的相册路径，如果以'-'开头，则需要在前面补充--，形如list -- -iw78289"
+
+#: cli.py:279
+msgid "Only display albums"
+msgstr "仅显示相册"
+
+#: cli.py:281
+msgid "Can be album id or '/' leading album path, if it starts with '-', then need to add '--list_album -- -iw78289"
+msgstr "可以是相册id或者'/'开头的相册路径，如果以'-'开头，则需要在前面补充--list_album -- -iw78289"
+
+#: cli.py:284
+msgid "album_id and album_path switch"
+msgstr "album_id和album_path互相转换"
+
+#: cli.py:286
+msgid "album_id and album_path switch, album path starts with '/'"
+msgstr "album_id 和 album_path 相互转换，相册路径需以'/'开头"
+
+#: cli.py:289
+msgid "Register upload/download function to mouse context menu"
+msgstr "将上传下载功能注册到鼠标上下文菜单中"
+
+#: cli.py:291
+msgid "Unregister mouse context menu"
+msgstr "取消注册鼠标上下文菜单中的上传下载功能"
+
+#: cli.py:316
+msgid "Need provide login information, can specify user and passwd parameters, or provide via environment variables (see help)"
+msgstr "需要提供登录信息，可以指定 user和passwd参数，或者通过环境变量提供（见帮助信息）"
+
+#: cli.py:336
+#, python-brace-format
+msgid "New album id: {id}"
+msgstr "新相册id: {id}"
