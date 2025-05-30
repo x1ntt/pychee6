@@ -1,5 +1,7 @@
 
-这是个对`lychee6`的`v2 api`进行包装的库，并提供一些实用功能。同时提供了一个简单命令行客户端`lychee-cli.py`，如果要使用`pychee6`，可以参考它
+[English version below](#english) <-- Click
+
+这是对`lychee6`的`v2 api`进行包装的库，并提供一些实用功能。同时提供了一个简单命令行客户端`lychee-cli.py`，如果要使用`pychee6`，可以参考它
 
 > 需要注意，目前仅支持`lychee6`以上的版本
 
@@ -71,31 +73,6 @@ options:
                         线程池大小 影响上传下载数量，默认为5
   -v, --verbose         输出调试信息
 ```
-# English version（old）
-```shell
-Usage: lychee-cli.py [-h] [-t TOKEN] [-u USER] [-p PASSWD] [-H HOST] [-m MAX_THREAD] [-v] {upload_album,u_a,upload_photo,u_p,download_album,d_a,create_album,c_a,delete_album,del_a,list,ls,list_album,la,conv,c_v} ...
-This is the CLI version of LycheeClient, which you can use as an example of how to use the library. In most cases, you can use album_id or album path as parameters.
-album_id is a 24-character string, such as b4noPnuHQSSCXZL_IMsLEGAJ.
-The album path is a string starting with /, such as /depth_1/depth_2. A single / represents the root directory or "unsorted" category.
-Positional arguments:
-{upload_album,u_a,upload_photo,u_p,download_album,d_a,create_album,c_a,delete_album,del_a,list,ls,list_album,la,conv,c_v}
-upload_album (u_a): Automatically create an album. If album_id is /, upload to the root album.
-upload_photo (u_p): Upload photos to an album. If album_id is /, upload to the "unsorted" category.
-download_album (d_a): Download an album. If album_id is /, download everything.
-create_album (c_a): Create an album. If album_id is /, create in the root album.
-delete_album (del_a): Delete a specified album.
-list (ls): List albums and photos.
-list_album (la): Display albums only.
-conv (c_v): Convert between album_id and album_path.
-Options:
--h, --help: Show this help message and exit.
--t, --token TOKEN: The API token required for login. Either this or the username is required. Can be provided via the LYCHEE_TOKEN environment variable.
--u, --user USER: Username. Can be provided via the LYCHEE_USERNAME environment variable.
--p, --passwd PASSWD: Password. Can be provided via the LYCHEE_PASSWORD environment variable.
--H, --host HOST: Server address, such as http://exp.com:8808/. Can be provided via the LYCHEE_HOST environment variable.
--m, --max_thread MAX_THREAD: Size of the thread pool, affecting the number of uploads/downloads. Default is 5.
--v, --verbose: Output debug information.
-```
 
 ## 登录
 有两种提供登录信息的方法，可以通过参数提供，例如
@@ -153,8 +130,167 @@ python3 -m pychee6_cm --unregister # 取消注册
 ```
 
 ### 对于linux
+我并未完整实现该功能，如果有需要请提issue🫡，你可以通过下面的指令测试是否可以正常添加上下文菜单
+
 ```shell
 python3 -m pychee6.cli reg_context    # 注册
 python3 -m pychee6.cli unreg_context  # 取消注册
 ```
-> `linux`上使用`https://github.com/saleguas/context_menu`库实现，该库目前仅支持`Nautilus`（并且我并未在`linux`上测试该功能，如果有问题请提issue🫡）
+> `linux`上使用`https://github.com/saleguas/context_menu`库实现，该库目前仅支持`Nautilus`
+
+# 汉化
+```shell
+xgettext -k_ -o locales/zh_CN/LC_MESSAGES/zh_CN.po cli.py
+msgfmt -o locales/zh_CN/LC_MESSAGES/zh_CN.mo locales/zh_CN/LC_MESSAGES/zh_CN.po
+```
+
+# english
+
+# pychee6 - Lychee6 v2 API Wrapper Library and Command-Line Client
+
+This is a library that wraps the `lychee6` `v2 api` and provides some useful functions. It also offers a simple command-line client `lychee-cli.py`. If you want to use `pychee6`, you can refer to it.
+
+> Note that currently only versions above `lychee6` are supported.
+
+If you have any questions or urgently needed features, please raise an issue. If I have time, I will implement it as soon as possible.
+
+# Installation
+
+## Via pip3
+
+```shell
+pip3 install git+https://github.com/x1ntt/pychee6
+```
+
+## Manual
+
+```shell
+git clone https://github.com/x1ntt/pychee6.git
+cd pychee6
+pip3 install .
+```
+
+For all library interfaces, please refer to the `LycheeClient` interface comments in the `src/pychee6.py` file.
+
+# Documentation
+
+```shell
+pip3 install pdoc
+```
+
+Then you can generate documentation using `pdoc pychee6.py`. For more details, see [pdoc API documentation](https://pdoc.dev/docs/pdoc.html).
+
+# About the CLI
+
+After installation, you can use the `cli` by running `python3 -m pychee6.cli`.
+
+If you are on a Windows device, use the `python` command instead of `python3`.
+
+```shell
+python -m pychee6.cli -h
+usage: cli.py [-h] [-t TOKEN] [-u USER] [-p PASSWD] [-H HOST] [-m MAX_THREAD] [-v]
+              {upload_album,u_a,upload_photo,u_p,download_album,d_a,create_album,c_a,delete_album,del_a,list,ls,list_album,la,conv,c_v,reg_context,unreg_context} ...
+
+This is the CLI version of LycheeClient, which you can use as an example of how to use the library. In most cases, you can use album_id or album path as parameters.
+        album_id is a 24-character string, such as b4noPnuHQSSCXZL_IMsLEGAJ.
+        The album path is a string starting with /, such as /depth_1/depth_2. A single / represents the root directory or "unsorted" category.
+
+positional arguments:
+  {upload_album,u_a,upload_photo,u_p,download_album,d_a,create_album,c_a,delete_album,del_a,list,ls,list_album,la,conv,c_v,reg_context,unreg_context}
+    upload_album (u_a): Upload an album. If album_id is /, upload to the root album.
+    upload_photo (u_p): Upload photos to an album. If album_id is /, upload to the "unsorted" category.
+    download_album (d_a): Download an album. If album_id is /, download everything.
+    create_album (c_a): Create an album. If album_id is /, create in the root album.
+    delete_album (del_a): Delete a specified album.
+    list (ls): List albums and photos.
+    list_album (la): Display albums only.
+    conv (c_v): Convert between album_id and album_path.
+    reg_context: Register upload and download functions to the context menu of the file manager.
+    unreg_context: Unregister upload and download functions from the context menu of the file manager.
+
+options:
+  -h, --help            show this help message and exit
+  -t, --token TOKEN     The API token required for login. Either this or the username is required. Can be provided via the LYCHEE_TOKEN environment variable.
+  -u, --user USER       Username. Can be provided via the LYCHEE_USERNAME environment variable.
+  -p, --passwd PASSWD   Password. Can be provided via the LYCHEE_PASSWORD environment variable.
+  -H, --host HOST       Server address, such as http://exp.com:8808/. Can be provided via the LYCHEE_HOST environment variable.
+  -m, --max_thread MAX_THREAD
+                        The size of the thread pool, affecting the number of uploads/downloads. The default is 5.
+  -v, --verbose         Output debug information.
+```
+
+## Login
+
+There are two ways to provide login information, either through parameters or environment variables.
+
+### Providing Login Information via Parameters
+
+```shell
+# Login with username and password
+python3 -m pychee6.cli --user admin --passwd admin --host http://127.0.0.1:3000/ ls
+# Or use short parameters
+python3 -m pychee6.cli -u root -p 123456 -H http://127.0.0.1:8802/ ls
+
+# Login with token
+lychee-cli.py --token xxxxxxxxxxxxx -H http://127.0.0.1:8802/
+```
+
+### Providing Login Information via Environment Variables
+
+| Command-Line Parameter | Environment Variable         | Meaning                     |
+|:-----------------------|:-----------------------------|:----------------------------|
+| `-u`                   | `LYCHEE_USERNAME`            | Username                    |
+| `-p`                   | `LYCHEE_PASSWORD`            | Password                    |
+| `-t`                   | `LYCHEE_TOKEN`               | API token, which takes precedence |
+
+The command-line parameters have a higher priority. For convenience, it is recommended to set the environment variables `LYCHEE_HOST` and `LYCHEE_TOKEN` to use the `cli`. The following examples assume that the environment variables are set, so the login-related parameters are omitted.
+
+## Operations
+
+### Viewing Albums and Photos
+
+The abbreviations and their corresponding full names can be found in the help information above.
+
+```shell
+python3 -m pychee6.cli ls   # List albums and photos
+python3 -m pychee6.cli la   # List albums only
+python3 -m pychee6.cli c_a / new_album # Create an album named `new_album` in the root directory
+python3 -m pychee6.cli c_a /new_album deepth_1  # Create an album named `deepth_2` under `new_album`
+python3 -m pychee6.cli d_a / ./tmp/     # Download the albums in the root directory to `./tmp/`
+python3 -m pychee6.cli u_a /new_album ./tmp/test__album/ # Upload the directory `./tmp/test__album/` to `/new_album`
+python3 -m pychee6.cli u_p /new_album ./tmp/test__album/157_modify.webp # Upload a photo
+
+# Convert between album_id and album_path
+python3 -m pychee6.cli c_v /new_album 
+python3 -m pychee6.cli c_v p92kvXqyZUC6M-8CcPAwnCpd
+```
+
+> In the above command-line parameters, you can use `album_id` or `album_path`. Using `album_id` will be faster. `album_path` is a path starting with `/`, such as `/depth_1/depth_2`, where `/` represents the root directory.
+
+## Registering Upload and Download Functions to the Context Menu of the File Manager
+
+### For Windows
+
+See here: [x1ntt/pychee6_cm](https://github.com/x1ntt/pychee6_cm)
+
+```shell
+python3 -m pychee6_cm --register   # Register
+python3 -m pychee6_cm --unregister # Unregister
+```
+
+### For Linux
+
+I have not fully implemented this feature. If you need it, please raise an issue🫡. You can use the following commands to test whether the context menu can be added normally:
+
+```shell
+python3 -m pychee6.cli reg_context    # Register
+python3 -m pychee6.cli unreg_context  # Unregister
+```
+
+> The `linux` version uses the [context_menu](https://github.com/saleguas/context_menu) library, which currently only supports `Nautilus`.
+
+# Translation
+```shell
+xgettext -k_ -o locales/zh_CN/LC_MESSAGES/zh_CN.po cli.py
+msgfmt -o locales/zh_CN/LC_MESSAGES/zh_CN.mo locales/zh_CN/LC_MESSAGES/zh_CN.po
+```

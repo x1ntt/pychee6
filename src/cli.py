@@ -8,6 +8,8 @@ import argparse
 import os
 import sys
 import json
+import gettext
+import locale
 
 # 这个类用来封装一些常用操作
 class lychee_cli:
@@ -103,7 +105,7 @@ class lychee_cli:
             self.client.upload_album(parent_album_id, files_path, skip_exist_photo)
             self.wait_task()
         else:
-            print (f"{files_path} 不是一个合法的目录或者它不存在")
+            print (_("'{path}' is not a valid directory or it does not exist").format(path=files_path))
 
     
     def upload_photo(self, album:str, file_path:str):
@@ -152,7 +154,7 @@ class lychee_cli:
             if len(res): 
                 print (res)
             else: 
-                print (f"找不到 {album_id} 对应的相册")
+                print (_("Cannot find album for ID: {id}").format(id=album_id))
     
     def reg_context(self):
         try:
@@ -160,11 +162,11 @@ class lychee_cli:
         except:
             pass
         # python_path = sys.executable
-        root = menus.ContextMenu('Upload to Lychee', type='FILES')
+        root = menus.ContextMenu(_('Upload to Lychee'), type='FILES')
         root.add_items([
-                menus.ContextCommand('✨刷新(如果相册有修改)', command=f"? -m pychee6.cli reg_context", command_vars=["PYTHONLOC"]),
-                menus.ContextCommand('❌取消注册', command=f"? -m pychee6.cli unreg_context", command_vars=["PYTHONLOC"]),
-                menus.ContextCommand('🔻上传到此处', command=f"? -m pychee6.cli u_p / ?", command_vars=["PYTHONLOC",'FILENAME']),
+                menus.ContextCommand(_('✨Refresh (if album modified)'), command=f"? -m pychee6.cli reg_context", command_vars=["PYTHONLOC"]),
+                menus.ContextCommand(_('❌Unregister'), command=f"? -m pychee6.cli unreg_context", command_vars=["PYTHONLOC"]),
+                menus.ContextCommand(_('🔻Upload here'), command=f"? -m pychee6.cli u_p / ?", command_vars=["PYTHONLOC",'FILENAME']),
             ])
         
         def get_items(parent, album_id):
@@ -172,7 +174,7 @@ class lychee_cli:
             for album in res["resource"]["albums"]:
                 tmp = menus.ContextMenu(album["title"])
                 tmp.add_items([
-                    menus.ContextCommand(f'🔻上传到此处', command=f"? -m pychee6.cli u_p -- {album['id']} ?", command_vars=["PYTHONLOC",'FILENAME'])
+                    menus.ContextCommand(f'🔻Upload to here', command=f"? -m pychee6.cli u_p -- {album['id']} ?", command_vars=["PYTHONLOC",'FILENAME'])
                 ])
                 get_items(tmp, album["id"])
                 parent.add_items([tmp])
@@ -182,7 +184,7 @@ class lychee_cli:
         for album in res["albums"]:
             tmp = menus.ContextMenu(album["title"])
             tmp.add_items([
-                menus.ContextCommand(f'🔻上传到此处', command=f"? -m pychee6.cli u_p -- {album['id']} ?", command_vars=["PYTHONLOC",'FILENAME'])
+                menus.ContextCommand(f'🔻Upload to here', command=f"? -m pychee6.cli u_p -- {album['id']} ?", command_vars=["PYTHONLOC",'FILENAME'])
             ])
             get_items(tmp, album["id"])
             root.add_items([tmp])
@@ -203,47 +205,90 @@ class lychee_cli:
         menus.removeMenu("Upload to Lychee", type='FILES')
 
 def main():
-    parser = argparse.ArgumentParser(description="这是LycheeClient的cli版本，你可以把这个当作库的使用示例。\n大多数情况下，你可以使用album_id或者相册路径为参数。\n\talbum_id是一个24位长度的字符串形如：b4noPnuHQSSCXZL_IMsLEGAJ。\n\t相册路径是以/开头的字符串形如：/deepth_1/deepth_2。其中单独的/表示根目录或者说未分类", formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument("-t", "--token", help="登录所需要的api token，与用户名二选一 可以通过 LYCHEE_TOKEN 环境变量提供")
-    parser.add_argument("-u", "--user", help="用户名 可以通过环境变量 LYCHEE_USERNAME 提供")
-    parser.add_argument("-p", "--passwd", help="密码 可以通过环境变量 LYCHEE_PASSWORD 提供")
-    parser.add_argument("-H", "--host", help="服务器地址，形如: http://exp.com:8808/ 可以通过环境变量 LYCHEE_HOST 提供")
-    parser.add_argument("-m", "--max_thread", default=5, help="线程池大小 影响上传下载数量，默认为5")
-    parser.add_argument("-v", "--verbose", action='store_true', help="输出调试信息")
+    # Initialize internationalization
+    _ = gettext.gettext
+    try:
+        loc = locale.getlocale()
+        if not loc[0] == "en_US":
+            l10n = gettext.translation(loc[0], localedir="locales", languages=[loc[0]])
+            l10n.install()
+            _ = l10n.gettext
+    except Exception as e:
+        print(f"{e}\nUsing default language - English(en_US.UTF-8)")
+
+    parser = argparse.ArgumentParser(description=_(
+        "This is the CLI version of LycheeClient, which can be used as an example of library usage.\n"
+        "In most cases, you can use album_id or album path as parameters.\n"
+        "\talbum_id is a 24-character string like: b4noPnuHQSSCXZL_IMsLEGAJ\n"
+        "\tAlbum path starts with / like: /depth_1/depth_2. Single / represents root directory or unsorted\n"
+        "\tFor issues or suggestions, please create an issue at: https://github.com/x1ntt/pychee6 😉"
+    ), formatter_class=argparse.RawDescriptionHelpFormatter)
+    
+    parser.add_argument("-t", "--token", help=_("API token required for login, alternative to username. Can be provided via LYCHEE_TOKEN environment variable"))
+    parser.add_argument("-u", "--user", help=_("Username. Can be provided via LYCHEE_USERNAME environment variable"))
+    parser.add_argument("-p", "--passwd", help=_("Password. Can be provided via LYCHEE_PASSWORD environment variable"))
+    parser.add_argument("-H", "--host", help=_("Server address, like: http://exp.com:8808/. Can be provided via LYCHEE_HOST environment variable"))
+    parser.add_argument("-m", "--max_thread", default=5, help=_("Thread pool size affecting upload/download count, default is 5"))
+    parser.add_argument("-v", "--verbose", action='store_true', help=_("Output debug information"))
 
     subargs = parser.add_subparsers(dest='command')
 
-    upload_album_arg = subargs.add_parser("upload_album", aliases=["u_a"], help="上传相册，album_id为'/'则上传到根相册")
-    upload_album_arg.add_argument("album_id", help="相册id，可以为'/'开头的相册路径")
-    upload_album_arg.add_argument("path", help="需要上传的目录")
-    upload_album_arg.add_argument("--skip_exist_photo", action='store_true', help="根据标题名跳过已经存在的图片")
+    upload_album_arg = subargs.add_parser("upload_album", aliases=["u_a"], 
+        help=_("Upload album, album_id as '/' then upload to root album"))
+    upload_album_arg.add_argument("album_id", 
+        help=_("Album id, can be '/' leading album path"))
+    upload_album_arg.add_argument("path", 
+        help=_("Path to upload directory"))
+    upload_album_arg.add_argument("--skip_exist_photo", action='store_true', 
+        help=_("Based on title name skip existing photos"))
 
-    upload_photo_arg = subargs.add_parser("upload_photo", aliases=["u_p"], help="上传图片到相册，album_id为'/'则上传到未分类")
-    upload_photo_arg.add_argument("album_id", help="相册id，可以为'/'开头的相册路径")
-    upload_photo_arg.add_argument("path", help="需要上传的图片")
+    upload_photo_arg = subargs.add_parser("upload_photo", aliases=["u_p"], 
+        help=_("Upload photo to album, album_id as '/' then upload to unsorted"))
+    upload_photo_arg.add_argument("album_id", 
+        help=_("Album id, can be '/' leading album path"))
+    upload_photo_arg.add_argument("path", 
+        help=_("Path to upload photo"))
 
-    download_album_arg = subargs.add_parser("download_album", aliases=["d_a"], help="下载相册，album_id为'/'则下载所有")
-    download_album_arg.add_argument("album_id", help="相册id，可以为'/'开头的相册路径")
-    download_album_arg.add_argument("path", help="下载的目标目录")
+    download_album_arg = subargs.add_parser("download_album", aliases=["d_a"], 
+        help=_("Download album, album_id as '/' then download all"))
+    download_album_arg.add_argument("album_id", 
+        help=_("Album id, can be '/' leading album path"))
+    download_album_arg.add_argument("path", 
+        help=_("Download target directory"))
 
-    create_album_arg = subargs.add_parser("create_album", aliases=["c_a"], help="创建相册，album_id为'/'则在根相册创建")
-    create_album_arg.add_argument("album_id", help="父相册id，可以为'/'开头的相册路径")
-    create_album_arg.add_argument("album_name", help="新相册的名字")
+    create_album_arg = subargs.add_parser("create_album", aliases=["c_a"], 
+        help=_("Create album, album_id as '/' then create album in root"))
+    create_album_arg.add_argument("album_id", 
+        help=_("Parent album id, can be '/' leading album path"))
+    create_album_arg.add_argument("album_name", 
+        help=_("New album name"))
 
-    delete_album_arg = subargs.add_parser("delete_album", aliases=["del_a"], help="删除指定相册")
-    delete_album_arg.add_argument("album_id", help="需要删除的相册id")
+    delete_album_arg = subargs.add_parser("delete_album", aliases=["del_a"], 
+        help=_("Delete specified album"))
+    delete_album_arg.add_argument("album_id", 
+        help=_("Album id to delete"))
 
-    list_arg = subargs.add_parser("list", aliases=["ls"], prog="list <dist> <album_id/album_path>", help="列出相册和图片")
-    list_arg.add_argument("target", nargs="?", default="/", help="可以是相册id或者'/'开头的相册路径，如果以'-'开头，则需要在前面补充--，形如list -- -iw78289")
+    list_arg = subargs.add_parser("list", aliases=["ls"], 
+        prog="list <dist> <album_id/album_path>", 
+        help=_("List album and photos"))
+    list_arg.add_argument("target", nargs="?", default="/", 
+        help=_("Can be album id or '/' leading album path, if it starts with '-', then need to add '--', like list -- -iw78289"))
 
-    list_arg = subargs.add_parser("list_album", aliases=["la"], prog="list_album <dist> <album_id/album_path>", help="仅显示相册")
-    list_arg.add_argument("target", nargs="?", default="/", help="可以是相册id或者'/'开头的相册路径，如果以'-'开头，则需要在前面补充--list_album -- -iw78289")
+    list_arg = subargs.add_parser("list_album", aliases=["la"], 
+        prog="list_album <dist> <album_id/album_path>", 
+        help=_("Only display albums"))
+    list_arg.add_argument("target", nargs="?", default="/", 
+        help=_("Can be album id or '/' leading album path, if it starts with '-', then need to add '--list_album -- -iw78289"))
 
-    conv_arg = subargs.add_parser("conv", aliases=["c_v"], help="album_id和album_path互相转换")
-    conv_arg.add_argument("album_id", help="album_id 和 album_path 相互转换，相册路径需以'/'开头")
+    conv_arg = subargs.add_parser("conv", aliases=["c_v"], 
+        help=_("album_id and album_path switch"))
+    conv_arg.add_argument("album_id", 
+        help=_("album_id and album_path switch, album path starts with '/'"))
 
-    reg_context_arg = subargs.add_parser("reg_context", help="将上传下载功能注册到鼠标上下文菜单中")
-    unreg_context_arg = subargs.add_parser("unreg_context", help="取消注册鼠标上下文菜单中的上传下载功能")
+    reg_context_arg = subargs.add_parser("reg_context", 
+        help=_("Register upload/download function to mouse context menu"))
+    unreg_context_arg = subargs.add_parser("unreg_context", 
+        help=_("Unregister mouse context menu"))
 
     args = parser.parse_args()
     # print (args)
@@ -268,7 +313,7 @@ def main():
         lychee_password = os.getenv("LYCHEE_PASSWORD")
 
     if lychee_token==None and lychee_username==None and lychee_password==None:
-        print ("需要提供登录信息，可以指定 user和passwd参数，或者通过环境变量提供（见帮助信息）")
+        print (_("Need provide login information, can specify user and passwd parameters, or provide via environment variables (see help)"))
         parser.print_help()
         return 
     
@@ -288,7 +333,7 @@ def main():
         cli.download_album(args.album_id, args.path)
     elif args.command in ["create_album", "c_a"]:
         new_album_id = cli.create_album(args.album_name, args.album_id)
-        print (f"新相册id: {new_album_id}")
+        print (_("New album id: {id}").format(id=new_album_id))
     elif args.command in ["delete_album", "del_a"]:
         print (cli.delete_album(args.album_id))
     elif args.command in ["conv", "c_v"]:
