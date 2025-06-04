@@ -119,10 +119,10 @@ class LycheeClient():
             :return: `dict`, see `./api_demo/get_albums.json`
         """
         return self._sess.get("Albums").json()
-    # todo
+
     def create_album(self, parent_album:str, album_name:str):
         """ create an album, and return `album_id`
-            :param parent_album: [required] parent album, default is root album
+            :param parent_album: [required] parent album
             :param album_name: [required] album name
             :return: `str`, album_id
         """
@@ -147,11 +147,10 @@ class LycheeClient():
             "album_ids": id_list
         }).status_code
 
-    # todo
-    def search(self, terms:str, album="/"):
+    def search(self, album:str, terms:str):
         """ Search keywords, you can specify the album
+            :param album: album, if is /, will search all albums
             :param terms: [required] Keywords
-            :param album_id: album_id, default is root album
             :return: `dict`
         """
         album_id = self.album_path2id_assert(album)
