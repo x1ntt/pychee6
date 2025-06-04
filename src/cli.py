@@ -100,7 +100,7 @@ class lychee_cli:
                         parent_album_id = album["id"]
             
             if parent_album_id == "":
-                parent_album_id = self.client.create_album(base_name, album_id)
+                parent_album_id = self.client.create_album(album_id, base_name)
 
             self.client.upload_album(parent_album_id, files_path, skip_exist_photo)
             self.wait_task()
@@ -140,8 +140,8 @@ class lychee_cli:
         
         self.wait_task()
     
-    def create_album(self, album_name:str, album_id:str):
-        return self.client.create_album(album_name, album_id)
+    def create_album(self, album:str, album_name:str):
+        return self.client.create_album(album, album_name)
 
     def delete_album(self, album_id:str):
         return self.client.delete_albums([album_id])
@@ -212,8 +212,6 @@ def main():
         if not loc[0] == "en_US":
             current_dir = os.path.dirname(os.path.abspath(__file__))
             localedir = os.path.join(current_dir, 'locales')
-            print (localedir)
-            print (loc)
             l10n = gettext.translation(loc[0], localedir=localedir, languages=[loc[0]])
             l10n.install()
             _ = l10n.gettext
@@ -336,7 +334,7 @@ def main():
     elif args.command in ["download_album", "d_a"]:
         cli.download_album(args.album_id, args.path)
     elif args.command in ["create_album", "c_a"]:
-        new_album_id = cli.create_album(args.album_name, args.album_id)
+        new_album_id = cli.create_album(args.album_id, args.album_name)
         print (_("New album id: {id}").format(id=new_album_id))
     elif args.command in ["delete_album", "del_a"]:
         print (cli.delete_album(args.album_id))

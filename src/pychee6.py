@@ -119,11 +119,11 @@ class LycheeClient():
             :return: `dict`, see `./api_demo/get_albums.json`
         """
         return self._sess.get("Albums").json()
-
-    def create_album(self, album_name:str, parent_album="/"):
+    # todo
+    def create_album(self, parent_album:str, album_name:str):
         """ create an album, and return `album_id`
+            :param parent_album: [required] parent album, default is root album
             :param album_name: [required] album name
-            :param parent_album: parent album, default is root album
             :return: `str`, album_id
         """
         album_id = self.album_path2id_assert(parent_album)
@@ -147,6 +147,7 @@ class LycheeClient():
             "album_ids": id_list
         }).status_code
 
+    # todo
     def search(self, terms:str, album="/"):
         """ Search keywords, you can specify the album
             :param terms: [required] Keywords
@@ -258,10 +259,10 @@ class LycheeClient():
             })
         return r.json() if len(r.text) else {}
     
-    def star_photo(self, is_star:bool, photo_ids=[]):
+    def star_photo(self, photo_ids:list, is_star:bool):
         """ Set the is-starred attribute of the given photos
-            :param is_star: [required] star or not
             :param photos: [required] photo_ids that need to be star, is list
+            :param is_star: [required] star or not
             :return: `str`
         """
         r = self._sess.post("Photo::star",
@@ -296,7 +297,7 @@ class LycheeClient():
         return r.json() if len(r.text) else {}
 
     def get_full_tree(self):
-        """ Get the complete album tree structure
+        """ Get the complete album tree structure, only the root user can access it
             :return: `dict`, see `./api_demo/get_full_tree.json`
         """
         r = self._sess.get("Maintenance::fullTree")
@@ -396,7 +397,7 @@ class LycheeClient():
             if os.path.isdir(tmp_name):
                 id = title_id_map.get(entry_name)
                 if not id:
-                    id = self.create_album(entry_name, album_id)
+                    id = self.create_album(album_id, entry_name)
                 self.upload_album(id, tmp_name)
             elif os.path.isfile(tmp_name):
                 # 这里不判断文件是否能够上传 交由api判断 Test: 上传非图片文件、上传视频
@@ -592,7 +593,7 @@ if __name__ == "__main__":
 
     # print (client.move_photo("",["xi5LK-J01rOhu8EvxpLGxHO5"]))
     # print (client.copy_photo("NIXGEcGdYzLKgxxlNS8CdReX",["xi5LK-J01rOhu8EvxpLGxHO5"]))
-    # print (client.star_photo(False, ["xi5LK-J01rOhu8EvxpLGxHO5"]))
+    # print (client.star_photo(["xi5LK-J01rOhu8EvxpLGxHO5"], False))
     # print (client.rename_photo("xi5LK-J01rOhu8EvxpLGxHO5", "阿乌拉"))
     # print (client.delete_photo(["JyRgElkcPuHDzGaqzQ47w3vb"]))
     # print (client.move_album("", ["Gn6aoWZiDMXatPQVMKc6wZm0"]))
