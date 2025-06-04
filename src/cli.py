@@ -208,9 +208,13 @@ def main():
     # Initialize internationalization
     _ = gettext.gettext
     try:
-        loc = locale.getlocale()
+        loc = locale.getdefaultlocale()
         if not loc[0] == "en_US":
-            l10n = gettext.translation(loc[0], localedir="locales", languages=[loc[0]])
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            localedir = os.path.join(current_dir, 'locales')
+            print (localedir)
+            print (loc)
+            l10n = gettext.translation(loc[0], localedir=localedir, languages=[loc[0]])
             l10n.install()
             _ = l10n.gettext
     except Exception as e:
