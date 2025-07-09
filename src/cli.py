@@ -223,7 +223,7 @@ def main():
         "In most cases, you can use album_id or album path as parameters.\n"
         "\talbum_id is a 24-character string like: b4noPnuHQSSCXZL_IMsLEGAJ\n"
         "\tAlbum path starts with / like: /depth_1/depth_2. Single / represents root directory or unsorted\n"
-        "\tFor issues or suggestions, please create an issue at: https://github.com/x1ntt/pychee6 😉"
+        "\tFor issues or suggestions, please create an issue at: https://github.com/x1ntt/pychee6 😉😉"
     ), formatter_class=argparse.RawDescriptionHelpFormatter)
     
     parser.add_argument("-t", "--token", help=_("API token required for login, alternative to username. Can be provided via LYCHEE_TOKEN environment variable"))
